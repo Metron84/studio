@@ -132,10 +132,10 @@ export default function BookingPage() {
             <br />
             Email:{' '}
             <a
-              href="mailto:hello@mrmelo.com"
+              href="mailto:melo@mrmelo.com"
               className="text-primary underline-offset-4 hover:underline hover:text-accent"
             >
-              hello@mrmelo.com
+              melo@mrmelo.com
             </a>
           </p>
         </div>
