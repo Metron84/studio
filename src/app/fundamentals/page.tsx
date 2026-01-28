@@ -1,86 +1,106 @@
-import { Download, BookCheck, ShieldCheck } from 'lucide-react';
+import { Download, Book, FileText, Ruler } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import Link from 'next/link';
 
 const resources = [
   {
-    title: 'The Growth Mindset',
+    title: 'A Map to Peace',
     description:
-      'An introductory guide to understanding and cultivating a mindset geared for growth and resilience.',
-    icon: <BookCheck className="h-6 w-6 text-primary" />,
-    fileName: 'growth-mindset.pdf',
+      'How humanity forgot complementarity. Why we pathologize difference. The path back to balance.',
+    icon: <FileText className="h-8 w-8 text-primary" />,
+    href: '/resources/map-to-peace.pdf',
+    cta: 'Download PDF',
   },
   {
-    title: 'Principles of Self-Discipline',
+    title: 'The Translator Imperative',
     description:
-      'Learn the fundamental principles of self-discipline to build powerful habits and achieve your goals.',
-    icon: <ShieldCheck className="h-6 w-6 text-primary" />,
-    fileName: 'self-discipline.pdf',
+      'The cognitive practice of bridging paradigms. Why some people carry asymmetric burdens. How to translate without losing yourself.',
+    icon: <FileText className="h-8 w-8 text-primary" />,
+    href: '/resources/translator-imperative.pdf',
+    cta: 'Download PDF',
   },
   {
-    title: 'Effective Communication Workbook',
+    title: 'The Nine Foundations',
     description:
-      'A practical workbook with exercises to help you improve your communication skills in personal and professional settings.',
-    icon: <BookCheck className="h-6 w-6 text-primary" />,
-    fileName: 'communication-workbook.pdf',
+      'Goodness → Clear Communication → Understanding → Authenticity → Trust → Justice → Truth → Respect → Love → Peace',
+    icon: <Book className="h-8 w-8 text-primary" />,
+    href: '#', // Placeholder
+    cta: 'Read Essays',
   },
   {
-    title: 'Mindfulness for Beginners',
+    title: 'The Metron Methodology',
     description:
-      'A simple guide to practicing mindfulness, reducing stress, and increasing your presence in daily life.',
-    icon: <ShieldCheck className="h-6 w-6 text-primary" />,
-    fileName: 'mindfulness-beginners.pdf',
+      'How to think synthetically, not just analytically. Building frameworks from timeless principles. Character as source of protection.',
+    icon: <Ruler className="h-8 w-8 text-primary" />,
+    href: '/resources/metron-methodology.pdf',
+    cta: 'Introduction PDF',
   },
 ];
 
 export default function FundamentalsPage() {
   return (
     <div className="animate-in fade-in duration-500">
-      <div className="container mx-auto max-w-5xl px-4 py-16 md:px-6 md:py-24">
+      <div className="container mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-24">
         <div className="text-center">
-          <h1 className="font-headline text-5xl font-bold tracking-tight md:text-6xl">
-            The Roots: Free Fundamentals
+          <h1 className="font-headline text-4xl font-normal tracking-tight md:text-5xl">
+            The Roots: Free Wisdom
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground md:text-xl">
-            Nurture your growth with these foundational resources, offered freely
-            to help you begin your journey.
+          <p className="mx-auto mt-6 max-w-2xl text-lg font-light text-muted-foreground md:text-xl">
+            Before you book a session, read these.
+            <br />
+            They'll show you what we explore together:
           </p>
         </div>
 
-        <div className="mt-12 grid gap-8 md:grid-cols-2">
+        <div className="mt-12 grid gap-8">
           {resources.map((resource) => (
-            <Card
-              key={resource.title}
-              className="flex flex-col transition-shadow duration-300 hover:shadow-lg"
-            >
-              <CardHeader className="flex-row items-center gap-4">
-                {resource.icon}
-                <CardTitle className="font-headline text-2xl">
-                  {resource.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <CardDescription className="text-base">
-                  {resource.description}
-                </CardDescription>
-              </CardContent>
-              <CardFooter>
-                <Button asChild className="w-full" variant="outline">
-                  <a href={`/resources/${resource.fileName}`} download>
-                    <Download className="mr-2 h-4 w-4" />
-                    Download PDF
-                  </a>
+            <Card key={resource.title} className="border-primary/10 bg-card p-2">
+              <CardHeader className="flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  {resource.icon}
+                  <CardTitle className="font-headline text-2xl font-normal">
+                    {resource.title}
+                  </CardTitle>
+                </div>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="shrink-0 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                >
+                  <Link
+                    href={resource.href}
+                    download={resource.href.endsWith('.pdf')}
+                  >
+                    {resource.href.endsWith('.pdf') && (
+                      <Download className="mr-2 h-4 w-4" />
+                    )}
+                    {resource.cta}
+                  </Link>
                 </Button>
-              </CardFooter>
+              </CardHeader>
+              <CardContent>
+                <p className="text-base text-muted-foreground">
+                  {resource.description}
+                </p>
+              </CardContent>
             </Card>
           ))}
+        </div>
+
+        <div className="mt-16 text-center text-lg font-light text-muted-foreground">
+          <p>Read. Reflect.</p>
+          <p>Then book your session if it resonates.</p>
+          <p className="mt-4">
+            The wisdom is free.
+            <br />
+            The conversation is where relevance emerges.
+          </p>
         </div>
       </div>
     </div>

@@ -1,18 +1,17 @@
 export function TreeBackground() {
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      className="pointer-events-none fixed bottom-0 right-0 z-0 h-[300px] w-[300px] overflow-hidden"
       aria-hidden="true"
     >
       <svg
-        className="absolute bottom-0 left-0 h-auto w-full text-primary/5 dark:text-primary/10"
-        width="1440"
-        height="1024"
+        className="h-full w-full text-primary"
         viewBox="0 0 1440 1024"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="xMidYMax slice"
       >
-        <g opacity="0.2">
+        <g opacity="0.03">
           <path
             d="M720 1024V800"
             stroke="currentColor"

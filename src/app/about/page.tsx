@@ -1,56 +1,113 @@
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+
+const LeafDivider = () => (
+  <div className="my-12 text-3xl opacity-30" aria-hidden="true">
+    🍃
+  </div>
+);
 
 export default function AboutPage() {
-  const aboutImage = PlaceHolderImages.find((img) => img.id === 'melo-about');
-
   return (
     <div className="animate-in fade-in duration-500">
-      <div className="container mx-auto max-w-5xl px-4 py-16 md:px-6 md:py-24">
-        <div className="grid gap-12 md:grid-cols-2">
-          <div className="flex items-center justify-center">
-            {aboutImage && (
-              <div className="relative h-[400px] w-full max-w-[300px] overflow-hidden rounded-lg shadow-2xl md:h-[500px] md:max-w-[400px]">
-                <Image
-                  src={aboutImage.imageUrl}
-                  alt={aboutImage.description}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 80vw, 400px"
-                  data-ai-hint={aboutImage.imageHint}
-                />
-              </div>
-            )}
-          </div>
-          <div className="flex flex-col justify-center">
-            <h1 className="font-headline text-5xl font-bold tracking-tight md:text-6xl">
-              The Man Behind the Method
-            </h1>
-            <div className="mt-8 space-y-6 text-lg text-foreground/80">
-              <p>
-                Welcome. I'm known as Mr. Melo, a guide dedicated to helping
-                individuals navigate the complexities of life to find clarity,
-                purpose, and growth. My journey began not in a classroom, but
-                in the rich tapestry of real-world experiences, observing the
-                intricate patterns of human behavior and potential.
-              </p>
-              <p>
-                My philosophy is rooted in the belief that every person holds
-                the seed of their own potential. Like a tree, with strong roots,
-                a solid trunk, and branches reaching for the sky, we too need to
-                be nurtured to grow. My work focuses on strengthening your
-                foundations—'The Roots'—so you can flourish in all aspects of
-                your life.
-              </p>
-              <p>
-                With a background that blends artistic sensibility and deep
-                empathy, I offer a unique perspective that transcends
-                conventional coaching. Together, we will explore your inner
-                landscape, cultivate self-awareness, and build a resilient
-                framework for lasting success and fulfillment.
-              </p>
-            </div>
-          </div>
+      <div className="container mx-auto max-w-2xl px-4 py-16 text-center md:px-6 md:py-24">
+        <h1 className="font-headline text-4xl font-normal md:text-5xl">
+          Who is Mr. Melo?
+        </h1>
+        <div className="mt-12 space-y-6 text-lg font-light text-muted-foreground">
+          <p>
+            Born in New York. Raised in London.
+            <br />
+            Rooted in Beirut. Based in Dubai.
+          </p>
+          <p>I spent decades asking: 'Who am I?'</p>
+          <p>
+            Trilingual. Multicultural. Neurodivergent.
+            <br />
+            Philosopher. Strategist. Storyteller.
+          </p>
+          <p>
+            I learned to translate between worlds.
+            <br />
+            To bridge incompatible paradigms.
+            <br />
+            To help people find their relevance.
+          </p>
+        </div>
+
+        <LeafDivider />
+
+        <h2 className="font-headline text-3xl font-normal md:text-4xl">
+          Why MrMelo.com Exists
+        </h2>
+        <div className="mt-8 space-y-6 text-lg font-light text-muted-foreground">
+          <p>
+            Sociologists are extinct.
+            <br />
+            Psychologists cost $200-400/hour.
+            <br />
+            Life coaches offer scripts without wisdom.
+          </p>
+          <p>And people are suffering from irrelevance.</p>
+          <p>
+            They have careers but no purpose.
+            <br />
+            Success but no satisfaction.
+            <br />
+            Achievements but no authenticity.
+          </p>
+          <p>
+            They've forgotten the fundamentals:
+            <br />- That they were designed to pursue knowledge
+            <br />- That their difference is design, not defect
+            <br />- That the canvas exists beyond the smudge
+          </p>
+          <p>
+            I offer philosophical mentorship.
+            <br />
+            Character-based guidance.
+            <br />
+            Methods grounded in timeless principles.
+          </p>
+          <p>
+            Not to fix you.
+            <br />
+            To help you remember who you are.
+            <br />
+            To restore your relevance.
+          </p>
+        </div>
+
+        <LeafDivider />
+
+        <h2 className="font-headline text-3xl font-normal md:text-4xl">
+          The Approach
+        </h2>
+        <div className="mt-8 space-y-6 text-lg font-light text-muted-foreground">
+          <p>We start with two free sessions (40 minutes each).</p>
+          <p>
+            You'll tell me where you feel irrelevant.
+            <br />
+            I'll show you where you've been staring at the smudge.
+            <br />
+            We'll explore what the canvas looks like for you.
+          </p>
+          <p>No pressure. No sales. Just clarity.</p>
+          <p>
+            If it resonates, we continue.
+            <br />
+            If not, you walk away with new perspective.
+          </p>
+          <p>Either way, you'll remember something fundamental.</p>
+        </div>
+        <div className="mt-12">
+          <Button
+            asChild
+            size="lg"
+            className="h-auto bg-accent px-12 py-3 text-lg font-medium text-accent-foreground shadow-md transition-all hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-lg"
+          >
+            <Link href="/booking">Book Your Free Sessions</Link>
+          </Button>
         </div>
       </div>
     </div>

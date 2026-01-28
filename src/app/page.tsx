@@ -5,23 +5,15 @@ import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
-  const heroImage = PlaceHolderImages.find((img) => img.id === 'melo-hero');
-  const aboutCardImage = PlaceHolderImages.find(
-    (img) => img.id === 'melo-card1'
-  );
-  const rootsCardImage = PlaceHolderImages.find(
-    (img) => img.id === 'melo-card2'
-  );
-  const bookingCardImage = PlaceHolderImages.find(
-    (img) => img.id === 'melo-card3'
-  );
+  const card1Image = PlaceHolderImages.find((img) => img.id === 'melo-card1');
+  const card2Image = PlaceHolderImages.find((img) => img.id === 'melo-card2');
+  const card3Image = PlaceHolderImages.find((img) => img.id === 'melo-card3');
 
   const features = [
     {
@@ -29,73 +21,107 @@ export default function Home() {
       description: 'Discover the story and philosophy behind the guidance.',
       href: '/about',
       icon: <User className="h-8 w-8 text-primary" />,
-      image: aboutCardImage,
+      image: card1Image,
     },
     {
       title: 'The Roots',
-      description: 'Explore a collection of free resources to nurture your growth.',
+      description:
+        'Explore a collection of free resources to nurture your growth.',
       href: '/fundamentals',
       icon: <BookOpen className="h-8 w-8 text-primary" />,
-      image: rootsCardImage,
+      image: card2Image,
     },
     {
       title: 'Book a Session',
       description: 'Schedule a one-on-one appointment to begin your journey.',
       href: '/booking',
       icon: <Calendar className="h-8 w-8 text-primary" />,
-      image: bookingCardImage,
+      image: card3Image,
     },
   ];
 
+  const LeafDivider = () => (
+    <div className="my-8 text-3xl opacity-30" aria-hidden="true">
+      🍃
+    </div>
+  );
+
   return (
     <div className="flex flex-col animate-in fade-in duration-500">
-      <section className="relative h-[60vh] min-h-[400px] w-full">
-        {heroImage && (
-          <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover"
-            data-ai-hint={heroImage.imageHint}
-            priority
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-        <div className="relative z-10 flex h-full flex-col items-center justify-center text-center">
-          <div className="max-w-4xl rounded-lg bg-background/70 p-8 backdrop-blur-sm">
-            <h1 className="font-headline text-5xl font-bold tracking-tight text-foreground md:text-7xl">
-              Cultivate Your Potential
+      <section className="w-full py-24 md:py-32">
+        <div className="container mx-auto px-4 text-center md:px-6">
+          <div className="mx-auto max-w-3xl">
+            <h1 className="font-headline text-4xl font-normal text-primary md:text-5xl">
+              Your journey is relevant.
+              <br />
+              Your existence is relevant.
             </h1>
-            <p className="mt-4 max-w-2xl text-lg text-muted-foreground md:text-xl">
-              Guidance and resources from Mr. Melo for personal and professional
-              growth.
+            <p className="mt-6 text-2xl font-light text-primary">
+              But are you feeling it?
             </p>
-            <Button asChild size="lg" className="mt-8">
-              <Link href="/booking">
-                Begin Your Journey <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+          </div>
+
+          <LeafDivider />
+
+          <div className="mx-auto max-w-2xl space-y-6 text-lg font-light text-muted-foreground">
+            <p>
+              Most people have forgotten.
+              <br />
+              They perform. They survive. They chase.
+              <br />
+              But they don't feel relevant to their own lives.
+            </p>
+          </div>
+
+          <LeafDivider />
+
+          <div className="mx-auto max-w-2xl space-y-6 text-lg font-light text-muted-foreground">
+            <p>
+              This isn't about therapy.
+              <br />
+              This isn't about coaching.
+              <br />
+              This isn't about courses.
+            </p>
+          </div>
+
+          <p className="mt-8 text-xl font-normal text-foreground">
+            This is about remembering the fundamentals.
+          </p>
+
+          <LeafDivider />
+
+          <div className="mt-12">
+            <Button
+              asChild
+              size="lg"
+              className="h-auto bg-accent px-16 py-4 text-lg font-medium text-accent-foreground shadow-md transition-all hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-lg"
+            >
+              <Link href="/booking">Book Your First Session - Free</Link>
             </Button>
+            <div className="mt-8 text-center text-muted-foreground">
+              <p>Two 40-minute conversations.</p>
+              <p>No obligation. Just clarity.</p>
+              <p className="mt-4">Let's talk about relevancy.</p>
+              <p className="mt-6 font-headline text-lg italic text-foreground">
+                - Mr. Melo
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="w-full py-16 md:py-24">
+      <section className="w-full bg-background/50 py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid gap-8 md:grid-cols-3">
             {features.map((feature) => (
               <Card
                 key={feature.title}
-                className="transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                className="transform-gpu border-primary/10 bg-white/50 p-2 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
               >
                 <CardHeader>
-                  <div className="mb-4 flex items-center gap-4">
-                    {feature.icon}
-                    <CardTitle className="font-headline text-2xl">
-                      {feature.title}
-                    </CardTitle>
-                  </div>
                   {feature.image && (
-                    <div className="relative h-48 w-full overflow-hidden rounded-lg">
+                    <div className="relative mb-4 h-48 w-full overflow-hidden rounded-md">
                       <Image
                         src={feature.image.imageUrl}
                         alt={feature.image.description}
@@ -106,12 +132,22 @@ export default function Home() {
                       />
                     </div>
                   )}
+                  <div className="flex items-center gap-4">
+                    {feature.icon}
+                    <CardTitle className="font-headline text-2xl font-normal">
+                      {feature.title}
+                    </CardTitle>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base">
+                  <p className="text-base text-muted-foreground">
                     {feature.description}
-                  </CardDescription>
-                  <Button asChild variant="link" className="p-0 mt-4">
+                  </p>
+                  <Button
+                    asChild
+                    variant="link"
+                    className="p-0 mt-4 text-primary hover:text-accent"
+                  >
                     <Link href={feature.href}>
                       Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>

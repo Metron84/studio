@@ -3,7 +3,22 @@ import { Toaster } from '@/components/ui/toaster';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { TreeBackground } from '@/components/tree-background';
+import { Inter, Crimson_Text } from 'next/font/google';
+import { cn } from '@/lib/utils';
 import './globals.css';
+
+const fontBody = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500'],
+  variable: '--font-body',
+});
+
+const fontHeadline = Crimson_Text({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-headline',
+});
 
 export const metadata: Metadata = {
   title: 'Mr. Melo',
@@ -17,24 +32,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Belleza&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="font-body antialiased">
+    <html lang="en">
+      <body
+        className={cn(
+          'font-body antialiased',
+          fontBody.variable,
+          fontHeadline.variable
+        )}
+      >
         <TreeBackground />
         <div className="relative z-10 flex min-h-screen flex-col">
           <Header />

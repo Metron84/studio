@@ -1,4 +1,3 @@
-import { Leaf } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
@@ -11,8 +10,10 @@ export function Logo({ className }: { className?: string }) {
         className
       )}
     >
-      <Leaf className="h-6 w-6 text-primary transition-transform duration-300 group-hover:rotate-12" />
-      <span className="font-headline text-2xl font-bold text-foreground">
+      <span className="text-2xl transition-transform duration-300 group-hover:rotate-12">
+        🌱
+      </span>
+      <span className="font-headline text-2xl font-normal text-foreground">
         Mr. Melo
       </span>
     </Link>
