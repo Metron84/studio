@@ -41,7 +41,7 @@ export default function Home() {
   ];
 
   const LeafDivider = () => (
-    <div className="my-8 text-3xl opacity-30" aria-hidden="true">
+    <div className="my-16 text-center text-3xl opacity-30" aria-hidden="true">
       🍃
     </div>
   );
@@ -111,9 +111,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="my-16 text-center text-3xl opacity-30" aria-hidden="true">
-        🍃
-      </div>
+      <LeafDivider />
 
       <section className="w-full py-24">
         <div className="container mx-auto px-4 text-center md:px-6">
@@ -145,9 +143,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="my-16 text-center text-3xl opacity-30" aria-hidden="true">
-        🍃
-      </div>
+      <LeafDivider />
 
       <section className="w-full bg-background/50 py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">

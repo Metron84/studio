@@ -1,5 +1,5 @@
 const LeafDivider = () => (
-  <div className="my-12 text-center text-3xl opacity-30" aria-hidden="true">
+  <div className="my-16 text-center text-3xl opacity-30" aria-hidden="true">
     🍃
   </div>
 );

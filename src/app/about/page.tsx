@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 const LeafDivider = () => (
-  <div className="my-12 text-3xl opacity-30" aria-hidden="true">
+  <div className="my-16 text-center text-3xl opacity-30" aria-hidden="true">
     🍃
   </div>
 );
@@ -100,7 +100,10 @@ export default function AboutPage() {
           </p>
           <p>Either way, you'll remember something fundamental.</p>
         </div>
-        <div className="mt-12">
+        
+        <LeafDivider />
+
+        <div>
           <Button
             asChild
             size="lg"

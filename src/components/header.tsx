@@ -17,7 +17,7 @@ import { useState } from 'react';
 const navLinks = [
   { href: '/about', label: 'About' },
   { href: '/fundamentals', label: 'The Roots' },
-  { href: '/booking', label: 'Book Session' },
+  { href: '/booking', label: 'Book Free Session' },
 ];
 
 export function Header() {
