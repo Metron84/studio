@@ -1,3 +1,6 @@
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+
 const LeafDivider = () => (
   <div className="my-16 text-center text-3xl opacity-30" aria-hidden="true">
     🍃
@@ -103,17 +106,27 @@ export default function BookingPage() {
 
         <LeafDivider />
 
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-xl text-center">
           <h2 className="mb-8 text-center font-headline text-3xl font-normal text-primary">
             Select Your Time
           </h2>
-          <div className="h-[800px] w-full overflow-hidden rounded-lg border border-primary/10 bg-card">
-            <iframe
-              src="https://calendar.google.com/calendar/appointments/schedules/YOUR_LINK_HERE"
-              className="h-full w-full border-0"
-              title="Booking Calendar"
-            ></iframe>
-          </div>
+          <Button
+            asChild
+            size="lg"
+            className="h-auto bg-accent px-12 py-4 text-lg font-medium text-accent-foreground shadow-md transition-all hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-lg"
+          >
+            <Link
+              href="https://calendar.google.com/calendar/appointments/schedules/YOUR_LINK_HERE"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Click here to view available times and book your session
+            </Link>
+          </Button>
+          <p className="mt-4 text-base text-muted-foreground">
+            You'll be taken to Google Calendar to select your time. This opens in a
+            new tab.
+          </p>
         </div>
 
         <LeafDivider />
