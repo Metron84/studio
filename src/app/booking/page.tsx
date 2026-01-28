@@ -116,7 +116,7 @@ export default function BookingPage() {
             className="h-auto bg-accent px-12 py-4 text-lg font-medium text-accent-foreground shadow-md transition-all hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-lg"
           >
             <Link
-              href="https://calendar.google.com/calendar/appointments/schedules/YOUR_LINK_HERE"
+              href="https://calendar.app.google/sYFJ4YpyE8416kny7"
               target="_blank"
               rel="noopener noreferrer"
             >
