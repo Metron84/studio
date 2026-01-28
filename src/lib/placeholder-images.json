@@ -1,0 +1,22 @@
+{
+  "placeholderImages": [
+    {
+      "id": "melo-card1",
+      "description": "Sunlight filtering through green leaves.",
+      "imageUrl": "https://images.unsplash.com/photo-1547736388-1b87be7a1ada?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsZWF2ZXMlMjBzdW5saWdodHxlbnwwfHx8fDE3Njk1NjkxNDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "leaves sunlight"
+    },
+    {
+      "id": "melo-card2",
+      "description": "A serene path through a lush green forest, representing a journey of growth.",
+      "imageUrl": "https://images.unsplash.com/photo-1623967680551-3e4694e2c9ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmb3Jlc3QlMjBwYXRofGVufDB8fHx8MTc2OTQ4MjYxNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "forest path"
+    },
+    {
+      "id": "melo-card3",
+      "description": "A person in deep thought, looking out over a landscape.",
+      "imageUrl": "https://images.unsplash.com/photo-1518644730709-0835105d9daa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwZXJzb24lMjB0aGlua2luZ3xlbnwwfHx8fDE3Njk1MjQ0MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person thinking"
+    }
+  ]
+}
