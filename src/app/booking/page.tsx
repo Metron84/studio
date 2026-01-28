@@ -120,7 +120,7 @@ export default function BookingPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Click here to view available times and book your session
+              View availability & book
             </Link>
           </Button>
           <p className="mt-4 text-base text-muted-foreground">
