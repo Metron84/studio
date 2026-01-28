@@ -56,14 +56,14 @@ export default function Home() {
               <br />
               Your existence is relevant.
             </h1>
-            <p className="mt-6 text-2xl font-light text-primary">
+            <p className="mt-16 text-2xl font-light text-primary">
               But are you feeling it?
             </p>
           </div>
 
           <LeafDivider />
 
-          <div className="mx-auto max-w-2xl space-y-6 text-lg font-light text-muted-foreground">
+          <div className="mx-auto max-w-2xl space-y-8 text-lg font-light text-muted-foreground">
             <p>
               Most people have forgotten.
               <br />
@@ -75,7 +75,7 @@ export default function Home() {
 
           <LeafDivider />
 
-          <div className="mx-auto max-w-2xl space-y-6 text-lg font-light text-muted-foreground">
+          <div className="mx-auto max-w-2xl space-y-8 text-lg font-light text-muted-foreground">
             <p>
               This isn't about therapy.
               <br />
@@ -91,7 +91,7 @@ export default function Home() {
 
           <LeafDivider />
 
-          <div className="mt-12">
+          <div className="rounded-lg border border-primary/10 bg-white/50 p-16">
             <Button
               asChild
               size="lg"
@@ -110,8 +110,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <LeafDivider />
 
       <section className="w-full py-24">
         <div className="container mx-auto px-4 text-center md:px-6">
