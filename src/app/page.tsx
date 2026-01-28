@@ -88,30 +88,10 @@ export default function Home() {
           <p className="mt-8 text-xl font-normal text-foreground">
             This is about remembering the fundamentals.
           </p>
-
-          <LeafDivider />
-
-          <div className="rounded-lg border border-primary/10 bg-white/50 p-16">
-            <Button
-              asChild
-              size="lg"
-              className="h-auto bg-accent px-16 py-4 text-lg font-medium text-accent-foreground shadow-md transition-all hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-lg"
-            >
-              <Link href="/booking">Book Your First Session - Free</Link>
-            </Button>
-            <div className="mt-8 text-center text-muted-foreground">
-              <p>Two 40-minute conversations.</p>
-              <p>No obligation. Just clarity.</p>
-              <p className="mt-4">Let's talk about relevancy.</p>
-              <p className="mt-6 font-headline text-lg italic text-foreground">
-                - Mr. Melo
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
-      <section className="w-full py-24">
+      <section className="w-full pb-16 pt-8">
         <div className="container mx-auto px-4 text-center md:px-6">
           <div className="mx-auto max-w-3xl">
             <h2 className="font-headline text-4xl font-normal text-primary mb-12">
@@ -137,6 +117,28 @@ export default function Home() {
               <br />
               when the canvas was always there.
             </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full pb-24 pt-8">
+        <div className="container mx-auto px-4 text-center md:px-6">
+          <div className="rounded-lg border border-primary/10 bg-white/50 p-16">
+            <Button
+              asChild
+              size="lg"
+              className="h-auto bg-accent px-16 py-4 text-lg font-medium text-accent-foreground shadow-md transition-all hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-lg"
+            >
+              <Link href="/booking">Book Your First Session - Free</Link>
+            </Button>
+            <div className="mt-8 text-center text-muted-foreground">
+              <p>Two 40-minute conversations.</p>
+              <p>No obligation. Just clarity.</p>
+              <p className="mt-4">Let's talk about relevancy.</p>
+              <p className="mt-6 font-headline text-lg italic text-foreground">
+                - Mr. Melo
+              </p>
+            </div>
           </div>
         </div>
       </section>
