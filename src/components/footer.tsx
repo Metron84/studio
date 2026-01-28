@@ -23,7 +23,7 @@ export function Footer() {
           ))}
         </nav>
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear() + 2} Mr. Melo. All rights reserved.
+          © 2025 Mr. Melo. All rights reserved.
         </p>
       </div>
     </footer>
