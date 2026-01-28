@@ -1,8 +1,9 @@
-import { Download, Book, FileText, Ruler } from 'lucide-react';
+import { Book, FileText, Ruler } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -11,35 +12,55 @@ import Link from 'next/link';
 const resources = [
   {
     title: 'A Map to Peace',
-    description:
-      'How humanity forgot complementarity. Why we pathologize difference. The path back to balance.',
     icon: <FileText className="h-8 w-8 text-primary" />,
-    href: '/resources/map-to-peace.pdf',
-    cta: 'Download PDF',
+    summary: [
+      'How humanity forgot complementarity. Why we pathologize difference. The path back to balance.',
+      "Most people believe their neurodivergence is a defect. It's not. It's design. This paper maps the journey from the Cold War (pathologization) to the Melding (complementarity restored).",
+    ],
+    learnPoints: [
+      'Why rice and fish both need the plate',
+      'The Translator persona that bridges worlds',
+      'The nine foundations that restore relevance',
+    ],
   },
   {
     title: 'The Translator Imperative',
-    description:
-      'The cognitive practice of bridging paradigms. Why some people carry asymmetric burdens. How to translate without losing yourself.',
     icon: <FileText className="h-8 w-8 text-primary" />,
-    href: '/resources/translator-imperative.pdf',
-    cta: 'Download PDF',
+    summary: [
+      'The cognitive practice of bridging paradigms. Why some people carry asymmetric burdens. How to translate without losing yourself.',
+      'Some people spend their entire lives translating between neurotypical and neurodivergent worlds. They manually compute what others do intuitively. This paper names that burden and offers a framework for understanding it.',
+    ],
+    learnPoints: [
+      'Pattern recognition as social systemizing',
+      'Strategic dissociation under cognitive load',
+      'Why translation is evolutionary necessity',
+    ],
   },
   {
     title: 'The Nine Foundations',
-    description:
-      'Goodness → Clear Communication → Understanding → Authenticity → Trust → Justice → Truth → Respect → Love → Peace',
     icon: <Book className="h-8 w-8 text-primary" />,
-    href: '#', // Placeholder
-    cta: 'Read Essays',
+    summary: [
+      'Goodness → Clear Communication → Understanding → Authenticity → Trust → Justice → Truth → Respect → Love → Peace',
+      "These aren't abstract virtues. They're operational principles. Each foundation builds on the previous, creating a path from wherever you are to wherever relevance lives.",
+    ],
+    learnPoints: [
+      'Why goodness is recognition, not judgment',
+      'How clear communication dismantles scripts',
+      'What authenticity demands when the mono-system punishes it',
+    ],
   },
   {
     title: 'The Metron Methodology',
-    description:
-      'How to think synthetically, not just analytically. Building frameworks from timeless principles. Character as source of protection.',
     icon: <Ruler className="h-8 w-8 text-primary" />,
-    href: '/resources/metron-methodology.pdf',
-    cta: 'Introduction PDF',
+    summary: [
+      'How to think synthetically, not just analytically. Building frameworks from timeless principles. Character as source of protection.',
+      'The Metron Methodology is a systematic approach to problem-solving that prioritizes HOW over WHAT, mechanism over intention, and synthesis over mere analysis.',
+    ],
+    learnPoints: [
+      'The Source Protocol (Intention × Mechanism)',
+      'Structuring logic (Roots → Trunk → Branches → Leaves)',
+      'Exception recognition and hybrid model acceptance',
+    ],
   },
 ];
 
@@ -60,35 +81,41 @@ export default function FundamentalsPage() {
 
         <div className="mt-12 grid gap-8">
           {resources.map((resource) => (
-            <Card key={resource.title} className="border-primary/10 bg-card p-2">
-              <CardHeader className="flex-row items-center justify-between gap-4">
+            <Card key={resource.title} className="border-primary/10 bg-card">
+              <CardHeader>
                 <div className="flex items-center gap-4">
                   {resource.icon}
                   <CardTitle className="font-headline text-2xl font-normal">
                     {resource.title}
                   </CardTitle>
                 </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4 text-base font-light text-muted-foreground">
+                  {resource.summary.map((paragraph, i) => (
+                    <p key={i}>{paragraph}</p>
+                  ))}
+                </div>
+
+                <div className="text-base font-light text-muted-foreground">
+                  <p className="font-normal text-foreground">You'll learn:</p>
+                  <ul className="mt-2 list-inside list-disc space-y-1 pl-2">
+                    {resource.learnPoints.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                </div>
+              </CardContent>
+              <CardFooter>
                 <Button
                   asChild
-                  variant="outline"
-                  className="shrink-0 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                  className="bg-accent text-accent-foreground shadow-md transition-all hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-lg"
                 >
-                  <Link
-                    href={resource.href}
-                    download={resource.href.endsWith('.pdf')}
-                  >
-                    {resource.href.endsWith('.pdf') && (
-                      <Download className="mr-2 h-4 w-4" />
-                    )}
-                    {resource.cta}
+                  <Link href="mailto:melo@mrmelo.com">
+                    Request Full Paper →
                   </Link>
                 </Button>
-              </CardHeader>
-              <CardContent>
-                <p className="text-base text-muted-foreground">
-                  {resource.description}
-                </p>
-              </CardContent>
+              </CardFooter>
             </Card>
           ))}
         </div>
@@ -101,6 +128,15 @@ export default function FundamentalsPage() {
             <br />
             The conversation is where relevance emerges.
           </p>
+        </div>
+        <div className="mt-8 text-center">
+          <Button
+            asChild
+            size="lg"
+            className="h-auto bg-accent px-12 py-3 text-lg font-medium text-accent-foreground shadow-md transition-all hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-lg"
+          >
+            <Link href="/booking">Book Your Free Sessions</Link>
+          </Button>
         </div>
       </div>
     </div>
