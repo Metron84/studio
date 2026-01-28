@@ -1,3 +1,34 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "melo-hero",
+      "description": "A serene path through a lush green forest, representing a journey of growth.",
+      "imageUrl": "https://images.unsplash.com/photo-1592859600972-1b0834d83747?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjBwYXRofGVufDB8fHx8MTc2OTQ4MjYxNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "forest path"
+    },
+    {
+      "id": "melo-about",
+      "description": "A thoughtful portrait of a man in a natural setting.",
+      "imageUrl": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3Njk1MzA5ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "melo-card1",
+      "description": "Sunlight filtering through green leaves.",
+      "imageUrl": "https://images.unsplash.com/photo-1682315912291-26f4de2d0ae8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsZWF2ZXMlMjBzdW5saWdodHxlbnwwfHx8fDE3Njk1NjkxNDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "leaves sunlight"
+    },
+    {
+      "id": "melo-card2",
+      "description": "Intricate tree roots digging into the ground.",
+      "imageUrl": "https://images.unsplash.com/photo-1621394250710-621401830f4a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cm9vdHMlMjBncm91bmR8ZW58MHx8fHwxNzY5NTY5MTQ4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "roots ground"
+    },
+    {
+      "id": "melo-card3",
+      "description": "A person in deep thought, looking out over a landscape.",
+      "imageUrl": "https://images.unsplash.com/photo-1527565290982-018bcfdbee74?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXJzb24lMjB0aGlua2luZ3xlbnwwfHx8fDE3Njk1MjQ0MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person thinking"
+    }
+  ]
 }
