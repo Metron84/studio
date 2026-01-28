@@ -111,6 +111,44 @@ export default function Home() {
         </div>
       </section>
 
+      <div className="my-16 text-center text-3xl opacity-30" aria-hidden="true">
+        🍃
+      </div>
+
+      <section className="w-full py-24">
+        <div className="container mx-auto px-4 text-center md:px-6">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="font-headline text-4xl font-normal text-primary mb-12">
+              Who This Is For
+            </h2>
+            <div className="text-lg font-light text-muted-foreground">
+              <p>You might be here because:</p>
+              <ul className="mt-4 mx-auto inline-block list-disc list-inside text-left space-y-2">
+                <li>You have success but no satisfaction</li>
+                <li>You have achievements but no authenticity</li>
+                <li>You have a career but no purpose</li>
+                <li>You perform roles but don't feel relevant</li>
+                <li>
+                  You're exhausted from pretending to be someone you're not
+                </li>
+              </ul>
+            </div>
+            <p className="my-8 text-xl font-normal text-foreground">
+              You're not broken.
+            </p>
+            <p className="text-lg font-light text-muted-foreground">
+              You've just been staring at the smudge
+              <br />
+              when the canvas was always there.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div className="my-16 text-center text-3xl opacity-30" aria-hidden="true">
+        🍃
+      </div>
+
       <section className="w-full bg-background/50 py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid gap-8 md:grid-cols-3">
