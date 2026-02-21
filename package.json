@@ -1,9 +1,0 @@
-{
-  "name": "mrmelo-vibes",
-  "version": "1.0.0",
-  "description": "Nostalgia player — stream your favourite decades",
-  "scripts": {
-    "build": "echo 'Static site — no build required'",
-    "vercel-build": "echo 'Static site — no build required'"
-  }
-}
