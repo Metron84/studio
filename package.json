@@ -5,5 +5,8 @@
   "scripts": {
     "build": "echo 'Static site — no build required'",
     "vercel-build": "echo 'Static site — no build required'"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.6.1"
   }
 }
