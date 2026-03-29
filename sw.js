@@ -1,4 +1,4 @@
-const CACHE = 'mrmelo-v1';
+const CACHE = 'mrmelo-v2';
 const ASSETS = [
   '/',
   '/index.html',
