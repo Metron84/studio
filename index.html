@@ -506,6 +506,14 @@
       border-color:rgba(255,120,100,0.6);
       color:rgba(255,150,130,0.95);
     }
+    .modal-set-btn {
+      appearance:none; cursor:pointer; background:transparent;
+      border:1px solid rgba(255,255,255,0.18); color:var(--dim);
+      border-radius:6px; font-size:0.95rem; line-height:1; padding:4px 8px;
+      transition:color .15s, border-color .15s, text-shadow .15s;
+    }
+    .modal-set-btn:hover { color:var(--text); border-color:rgba(255,255,255,0.35); }
+    .modal-set-btn.active { color:var(--accent); border-color:var(--accent); text-shadow:0 0 10px var(--accent); }
     .modal-track.dragging {
       opacity:0.5;
     }
@@ -815,7 +823,6 @@
             <button type="button" class="catalogue-tile" data-value="80s" aria-pressed="false">80s</button>
             <button type="button" class="catalogue-tile" data-value="90s" aria-pressed="false">90s</button>
             <button type="button" class="catalogue-tile" data-value="2000" aria-pressed="false">2000</button>
-            <button type="button" class="catalogue-tile" data-value="folk" aria-pressed="false">Folk</button>
             <button type="button" class="catalogue-tile" data-value="MrMelo Mix" aria-pressed="false">MrMelo Mix</button>
             <button type="button" class="catalogue-tile" data-value="Oldies and Goldies" aria-pressed="false">Oldies and Goldies</button>
             <button type="button" class="catalogue-tile" data-value="Summer Dance" aria-pressed="false">Summer Dance</button>
@@ -866,6 +873,25 @@
   <div class="modal-list catalogue-mobile-list" id="catalogueMobileList" role="listbox" aria-label="Catalogue categories"></div>
 </div>
 
+<div class="modal-backdrop" id="djSetBackdrop" onclick="closeDjSet()"></div>
+<div class="modal" id="djSetModal" role="dialog" aria-modal="true" aria-labelledby="djSetTitle">
+  <div class="modal-header">
+    <div>
+      <div class="modal-title" id="djSetTitle">Your DJ Set</div>
+      <div class="modal-order" id="djSetCount">0 tracks</div>
+    </div>
+    <div class="modal-header-actions">
+      <button type="button" class="modal-restore-btn" onclick="playDjSet()" aria-label="Play your set">▶ Play set</button>
+      <button type="button" class="modal-restore-btn" onclick="clearDjSet()" aria-label="Clear your set">Clear</button>
+      <button class="modal-close" onclick="closeDjSet()" aria-label="Close">&times;</button>
+    </div>
+  </div>
+  <div class="modal-search-wrap" style="padding:0 24px 12px;">
+    <input type="text" id="djSetNameInput" class="search-input" placeholder="Name tonight's set…" autocomplete="off" aria-label="Name your set" style="min-width:0;width:100%;">
+  </div>
+  <div class="modal-list" id="djSetList" role="listbox" aria-label="Your DJ set" tabindex="0"></div>
+</div>
+
 <div class="genre-tag" id="genreTag">
   <div class="genre-name" id="genreWatermark">—</div>
 </div>
@@ -904,6 +930,7 @@
     <button type="button" class="btn btn-transport" onclick="shuffle()" id="shuffleBtn" aria-label="Shuffle queue" title="Shuffle queue"><span class="ctrl-text">Shuffle</span><span class="ctrl-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h5v5M4 20l16-16M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></span></button>
     <button type="button" class="btn btn-viz" onclick="cycleViz()" id="vizBtn" aria-label="Visualization: Bars" title="Visualization: Bars (keyboard V)"><span class="ctrl-text" id="vizBtnText">Bars</span><span class="ctrl-icon" id="vizBtnIcon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18V8M12 18v-8M18 18V4"/></svg></span></button>
     <button type="button" class="btn btn-transport" id="upNextBtn" onclick="openUpNext()" aria-label="Open Up Next queue" title="Up Next"><span class="ctrl-text">Up Next</span><span class="ctrl-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="5" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="5" cy="18" r="1" fill="currentColor" stroke="none"/></svg></span></button>
+    <button type="button" class="btn btn-transport" id="djSetBtn" onclick="openDjSet()" aria-label="Open your DJ set" title="Your DJ set"><span class="ctrl-text">Set <span id="djSetBadge">0</span></span><span class="ctrl-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span></button>
   </div>
 </div>
 
@@ -917,6 +944,15 @@ let trackIdx = 0;
 let upNextActiveIndex = 0;
 let isPlaying = false;
 let isShuffled = false;
+let djSet = [];
+try { djSet = JSON.parse(localStorage.getItem('mrmelo_djset') || '[]'); } catch (_) { djSet = []; }
+function saveDjSet() { try { localStorage.setItem('mrmelo_djset', JSON.stringify(djSet)); } catch (_) {} }
+function inDjSet(file) { return djSet.includes(file); }
+function toggleDjSet(file) {
+  const i = djSet.indexOf(file);
+  if (i === -1) djSet.push(file); else djSet.splice(i, 1);
+  saveDjSet();
+}
 
 const MODES = ['Bars','Wave','Radial'];
 const VIZ_SVG_HTML = [
@@ -968,29 +1004,16 @@ function applyCatalogue() {
 
 function loadTrack(i) {
   if (!queue[i]) return;
+  cancelFade();
   trackIdx = i;
   const t = queue[i];
-
-  document.getElementById('trackName').textContent = t.title;
-  document.getElementById('trackArtist').textContent = t.artist + ' · ' + t.catalogue;
-  document.getElementById('trackNum').textContent = (i + 1) + ' / ' + queue.length;
-  document.getElementById('progFill').style.width = '0%';
-  document.getElementById('tEl').textContent = '0:00';
-  document.getElementById('tDur').textContent = '0:00';
-
-  document.getElementById('subtitle').classList.remove('show');
-  document.getElementById('subtitleQuote').textContent = '';
-  document.getElementById('subtitleSig').textContent = t.figure ? '— ' + t.figure : '— Mr. Melo';
-  setTimeout(() => {
-    document.getElementById('subtitleQuote').textContent = t.reflection || '';
-    if (t.reflection) document.getElementById('subtitle').classList.add('show');
-  }, 600);
-
+  renderTrackMeta(i);
+  audio.volume = 1;
   audio.crossOrigin = t.file.startsWith('http') ? null : 'anonymous';
   audio.src = t.file;
   audio.load();
   if (isPlaying) {
-    audio.play().then(() => {}).catch((e) => {
+    audio.play().catch((e) => {
       if (e && e.name === 'NotAllowedError') {
         isPlaying = false;
         setPlayButtonVisual(false);
@@ -1000,6 +1023,27 @@ function loadTrack(i) {
       }
     });
   }
+}
+
+function renderTrackMeta(i) {
+  const t = queue[i];
+  if (!t) return;
+  document.getElementById('trackName').textContent = t.title;
+  document.getElementById('trackArtist').textContent = t.artist + ' · ' + t.catalogue;
+  document.getElementById('trackNum').textContent = (i + 1) + ' / ' + queue.length;
+  document.getElementById('progFill').style.width = '0%';
+  document.getElementById('tEl').textContent = '0:00';
+  document.getElementById('tDur').textContent = '0:00';
+  document.getElementById('subtitle').classList.remove('show');
+  document.getElementById('subtitleQuote').textContent = '';
+  document.getElementById('subtitleSig').textContent = t.figure ? '— ' + t.figure : '— Mr. Melo';
+  setTimeout(() => {
+    // only show if this track is still the current one (guards against fast skips)
+    if (queue[trackIdx] && queue[trackIdx].file === t.file) {
+      document.getElementById('subtitleQuote').textContent = t.reflection || '';
+      if (t.reflection) document.getElementById('subtitle').classList.add('show');
+    }
+  }, 600);
 }
 
 function showSubtitle(text) {
@@ -1014,11 +1058,13 @@ function showSubtitle(text) {
 
 function nextTrack() {
   if (!queue.length) return;
+  if (isFading) { cancelFade(); return; }   // fade is already moving to the next track — settle there
   loadTrack((trackIdx + 1) % queue.length);
 }
 
 function prevTrack() {
   if (!queue.length) return;
+  if (isFading) cancelFade();
   loadTrack((trackIdx - 1 + queue.length) % queue.length);
 }
 
@@ -1035,7 +1081,7 @@ function togglePlay() {
   pb.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
   pb.setAttribute('title', isPlaying ? 'Pause' : 'Play');
   if (isPlaying) {
-    audio.play().then(() => {}).catch((e) => {
+    audio.play().catch((e) => {
       if (e && e.name === 'NotAllowedError') {
         isPlaying = false;
         setPlayButtonVisual(false);
@@ -1044,7 +1090,9 @@ function togglePlay() {
       }
     });
   } else {
+    if (isFading) cancelFade();
     audio.pause();
+    idleDeck.pause();
   }
 }
 
@@ -1179,12 +1227,13 @@ function buildUpNextListContent() {
       '<span class="modal-track-catalogue">' + escapeHtml(t.catalogue || '') + '</span>' +
       '<span class="modal-track-duration">' + escapeHtml(durStr) + '</span>' +
       '<div class="modal-track-actions">' +
+        '<button type="button" class="modal-set-btn' + (inDjSet(t.file) ? ' active' : '') + '" title="Add to your set" aria-pressed="' + (inDjSet(t.file) ? 'true' : 'false') + '">' + (inDjSet(t.file) ? '★' : '☆') + '</button>' +
         '<button type="button" class="modal-queue-btn" title="Play next">Next</button>' +
         '<button type="button" class="modal-queue-btn" title="Add to end">End</button>' +
         '<button type="button" class="modal-queue-btn modal-queue-btn-remove" title="Remove from queue">Remove</button>' +
       '</div>';
     row.addEventListener('click', (e) => {
-      if (e.target.closest('.modal-queue-btn') || e.target.closest('.modal-track-drag-handle')) return;
+      if (e.target.closest('.modal-queue-btn') || e.target.closest('.modal-set-btn') || e.target.closest('.modal-track-drag-handle')) return;
       loadTrack(i);
       closeUpNext();
     });
@@ -1192,6 +1241,17 @@ function buildUpNextListContent() {
     if (btns[0]) btns[0].addEventListener('click', (e) => { e.stopPropagation(); playNext(i); });
     if (btns[1]) btns[1].addEventListener('click', (e) => { e.stopPropagation(); addToEnd(i); });
     if (btns[2]) btns[2].addEventListener('click', (e) => { e.stopPropagation(); removeFromQueue(i); });
+    const setBtn = row.querySelector('.modal-set-btn');
+    if (setBtn) setBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleDjSet(t.file);
+      const on = inDjSet(t.file);
+      setBtn.classList.toggle('active', on);
+      setBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      setBtn.textContent = on ? '★' : '☆';
+      updateDjSetBadge();
+      if (document.getElementById('djSetModal')?.classList.contains('show')) buildDjSetList();
+    });
     row.addEventListener('dragstart', (e) => {
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', String(i));
@@ -1320,28 +1380,230 @@ function updateUpNextFocus() {
   list.setAttribute('aria-activedescendant', 'modal-track-' + upNextActiveIndex);
 }
 
+// ---- DJ Set ----
+let djSetName = '';
+try { djSetName = localStorage.getItem('mrmelo_djset_name') || ''; } catch (_) {}
+function saveDjSetName(n) { djSetName = n; try { localStorage.setItem('mrmelo_djset_name', n); } catch (_) {} }
+
+function djSetTracks() {
+  const byFile = new Map(ALL_TRACKS.map((t) => [t.file, t]));
+  return djSet.map((f) => byFile.get(f)).filter(Boolean);
+}
+
+function updateDjSetBadge() {
+  const b = document.getElementById('djSetBadge');
+  if (b) b.textContent = String(djSet.length);
+}
+
+function openDjSet() {
+  closeUpNext();
+  closeCatalogSearch();
+  closeCatalogueMobileModal();
+  const nameInput = document.getElementById('djSetNameInput');
+  if (nameInput) nameInput.value = djSetName;
+  buildDjSetList();
+  document.getElementById('djSetBackdrop').classList.add('show');
+  document.getElementById('djSetModal').classList.add('show');
+}
+
+function closeDjSet() {
+  document.getElementById('djSetBackdrop')?.classList.remove('show');
+  document.getElementById('djSetModal')?.classList.remove('show');
+  const btn = document.getElementById('djSetBtn');
+  if (btn) btn.focus();
+}
+
+function buildDjSetList() {
+  const list = document.getElementById('djSetList');
+  if (!list) return;
+  const tracks = djSetTracks();
+  document.getElementById('djSetCount').textContent = tracks.length + (tracks.length === 1 ? ' track' : ' tracks');
+  list.innerHTML = '';
+  if (!tracks.length) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'padding:32px 24px;color:var(--dim);text-align:center;font-size:0.8rem;letter-spacing:1px;';
+    empty.textContent = 'No tracks yet. Star songs from Up Next to build your set.';
+    list.appendChild(empty);
+    return;
+  }
+  tracks.forEach((t, i) => {
+    const row = document.createElement('div');
+    row.className = 'modal-track';
+    row.setAttribute('role', 'option');
+    row.dataset.index = String(i);
+    row.draggable = true;
+    const durStr = (t.duration != null && !isNaN(t.duration)) ? fmt(t.duration) : '';
+    row.innerHTML =
+      '<span class="modal-track-drag-handle" aria-hidden="true" title="Drag to reorder">⋮⋮</span>' +
+      '<span class="modal-track-num">' + (i + 1) + '</span>' +
+      '<div class="modal-track-info">' +
+        '<div class="modal-track-title">' + escapeHtml(t.title) + '</div>' +
+        '<div class="modal-track-artist">' + escapeHtml(t.artist) + '</div>' +
+      '</div>' +
+      '<span class="modal-track-catalogue">' + escapeHtml(t.catalogue || '') + '</span>' +
+      '<span class="modal-track-duration">' + escapeHtml(durStr) + '</span>' +
+      '<div class="modal-track-actions">' +
+        '<button type="button" class="modal-queue-btn modal-queue-btn-remove" title="Remove from set">Remove</button>' +
+      '</div>';
+    row.addEventListener('click', (e) => {
+      if (e.target.closest('.modal-queue-btn') || e.target.closest('.modal-track-drag-handle')) return;
+      playDjSetFrom(i);
+    });
+    row.querySelector('.modal-queue-btn-remove').addEventListener('click', (e) => {
+      e.stopPropagation();
+      removeFromDjSet(i);
+    });
+    row.addEventListener('dragstart', (e) => { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(i)); row.classList.add('dragging'); });
+    row.addEventListener('dragend', () => row.classList.remove('dragging'));
+    row.addEventListener('dragover', (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; list.querySelectorAll('.modal-track.drag-over').forEach((r) => { if (r !== row) r.classList.remove('drag-over'); }); row.classList.add('drag-over'); });
+    row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+    row.addEventListener('drop', (e) => {
+      e.preventDefault();
+      row.classList.remove('drag-over');
+      const from = parseInt(e.dataTransfer.getData('text/plain'), 10);
+      const to = parseInt(row.dataset.index, 10);
+      if (!isNaN(from) && !isNaN(to) && from !== to) moveDjSetItem(from, to);
+    });
+    list.appendChild(row);
+  });
+}
+
+function removeFromDjSet(i) {
+  djSet.splice(i, 1);
+  saveDjSet();
+  updateDjSetBadge();
+  buildDjSetList();
+  if (document.getElementById('upNextModal')?.classList.contains('show')) buildUpNextListContent();
+}
+
+function moveDjSetItem(from, to) {
+  const item = djSet.splice(from, 1)[0];
+  const insertIdx = from < to ? to - 1 : to;
+  djSet.splice(insertIdx, 0, item);
+  saveDjSet();
+  buildDjSetList();
+}
+
+function clearDjSet() {
+  if (!djSet.length) return;
+  djSet = [];
+  saveDjSet();
+  updateDjSetBadge();
+  buildDjSetList();
+  if (document.getElementById('upNextModal')?.classList.contains('show')) buildUpNextListContent();
+}
+
+function playDjSetFrom(startIdx) {
+  const tracks = djSetTracks();
+  if (!tracks.length) return;
+  isShuffled = false;
+  document.getElementById('shuffleBtn')?.classList.remove('glow');
+  playlist = [...tracks];
+  queue = [...tracks];
+  trackIdx = Math.max(0, Math.min(startIdx, queue.length - 1));
+  isPlaying = true;
+  setPlayButtonVisual(true);
+  const pb = document.getElementById('playBtn');
+  if (pb) { pb.setAttribute('aria-label', 'Pause'); pb.setAttribute('title', 'Pause'); }
+  loadTrack(trackIdx);
+  closeDjSet();
+}
+function playDjSet() { playDjSetFrom(0); }
+
 function escapeHtml(s) {
   const div = document.createElement('div');
   div.textContent = s || '';
   return div.innerHTML;
 }
 
-// Audio events
-const audio = document.getElementById('audio');
+// ---- Dual-deck playback engine (crossfade) ----
+let audio = document.getElementById('audio');   // active deck
+let idleDeck = audio.cloneNode(false);          // second deck
+idleDeck.id = 'audio2';
+audio.parentNode.insertBefore(idleDeck, audio.nextSibling);
 
-audio.addEventListener('timeupdate', () => {
+let djCrossfade = true;    // natural fade between tracks
+const CROSSFADE_SEC = 6;   // fade length in seconds
+let isFading = false;
+
+function cancelFade() {
+  if (!isFading) return;
+  isFading = false;
+  idleDeck.pause();
+  idleDeck.volume = 1;
+  try { idleDeck.currentTime = 0; } catch (_) {}
+  audio.volume = 1;
+}
+
+function maybeStartCrossfade() {
+  if (!djCrossfade || isFading || !isPlaying) return;
+  if (!audio.duration || isNaN(audio.duration)) return;
+  if (queue.length < 2) return;
+  const fadeLen = Math.min(CROSSFADE_SEC, audio.duration / 2);
+  if (audio.duration - audio.currentTime <= fadeLen) startCrossfade(fadeLen);
+}
+
+function startCrossfade(fadeLen) {
+  const nextIndex = (trackIdx + 1) % queue.length;
+  const t = queue[nextIndex];
+  if (!t) return;
+  isFading = true;
+  const outgoing = audio;
+  const incoming = idleDeck;
+  incoming.crossOrigin = t.file.startsWith('http') ? null : 'anonymous';
+  incoming.src = t.file;
+  incoming.load();
+  incoming.volume = 0;
+  try { incoming.currentTime = 0; } catch (_) {}
+  incoming.play().catch(() => {});
+  // the incoming deck is now the active one
+  audio = incoming;
+  idleDeck = outgoing;
+  trackIdx = nextIndex;
+  renderTrackMeta(nextIndex);
+  const startedAt = performance.now();
+  (function step(now) {
+    if (!isFading) return;               // cancelled by a manual action
+    const p = Math.min(1, (now - startedAt) / (fadeLen * 1000));
+    incoming.volume = p;
+    outgoing.volume = 1 - p;
+    if (p < 1) {
+      requestAnimationFrame(step);
+    } else {
+      outgoing.pause();
+      outgoing.volume = 1;
+      try { outgoing.currentTime = 0; } catch (_) {}
+      isFading = false;
+    }
+  })(performance.now());
+}
+
+function onDeckTimeUpdate(e) {
+  if (e.target !== audio) return;        // ignore the fading-out deck
   if (audio.duration && !isNaN(audio.duration)) {
     const pct = (audio.currentTime / audio.duration) * 100;
     document.getElementById('progFill').style.width = pct + '%';
     document.getElementById('tEl').textContent = fmt(audio.currentTime);
     document.getElementById('tDur').textContent = fmt(audio.duration);
   }
-});
+  maybeStartCrossfade();
+}
 
-audio.addEventListener('ended', nextTrack);
+function onDeckEnded(e) {
+  if (e.target !== audio) return;        // the outgoing deck ending is expected during a fade
+  if (isFading) return;
+  nextTrack();                           // hard cut when crossfade is off / didn't trigger
+}
 
-audio.addEventListener('error', () => {
+function onDeckError(e) {
+  if (e.target !== audio) return;
   document.getElementById('tDur').textContent = '—';
+}
+
+[audio, idleDeck].forEach((d) => {
+  d.addEventListener('timeupdate', onDeckTimeUpdate);
+  d.addEventListener('ended', onDeckEnded);
+  d.addEventListener('error', onDeckError);
 });
 
 function fmt(s) {
@@ -1353,6 +1615,7 @@ function fmt(s) {
 // Progress bar click
 document.getElementById('progBar').addEventListener('click', (e) => {
   if (!audio.duration || isNaN(audio.duration)) return;
+  if (isFading) cancelFade();
   const rect = e.currentTarget.getBoundingClientRect();
   const pct = (e.clientX - rect.left) / rect.width;
   audio.currentTime = pct * audio.duration;
@@ -1434,6 +1697,9 @@ function selectCatalogue(value) {
 catalogueTiles.forEach((btn) => {
   btn.addEventListener('click', () => selectCatalogue(tileValue(btn)));
 });
+
+document.getElementById('djSetNameInput')?.addEventListener('input', (e) => saveDjSetName(e.target.value));
+updateDjSetBadge();
 
 (function wireSearchInputs() {
   const desktop = document.getElementById('searchInput');

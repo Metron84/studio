@@ -159,7 +159,7 @@ async function scanDir(dir, catalogue) {
   return tracks;
 }
 
-const catalogues = ['80s', '90s', '2000', 'folk', 'MrMelo Mix', 'Oldies and Goldies'];
+const catalogues = ['80s', '90s', '2000', 'MrMelo Mix', 'Oldies and Goldies'];
 
 (async () => {
   let all = [];
