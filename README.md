@@ -27,9 +27,35 @@ Deployed builds include royalty-free demo tracks from [SoundHelix](https://www.s
    ```
    Or: `python3 -m http.server 8080` (then open http://localhost:8080)
 
-## Catalogue dropdown
+## Catalogue
 
-Select **Entire catalogue** or a single catalogue (80s, 90s, 2000, Folk, MrMelo Mix) to filter tracks.
+Select **Entire catalogue** or a single catalogue (80s, 90s, 2000, MrMelo Mix, Oldies and Goldies, Summer Dance, FootFans) to filter tracks.
+
+## DJ Set mix download (R2 CORS)
+
+**Download mix** in Your DJ Set fetches tracks in the browser and renders one WAV with the same ~6s crossfades. That needs CORS on the public R2 bucket (playback alone does not).
+
+In Cloudflare → R2 → your music bucket → **Settings → CORS policy**, allow:
+
+```json
+[
+  {
+    "AllowedOrigins": [
+      "https://mrmelo.com",
+      "https://www.mrmelo.com",
+      "http://localhost:3000",
+      "http://localhost:8080",
+      "http://127.0.0.1:8080"
+    ],
+    "AllowedMethods": ["GET", "HEAD"],
+    "AllowedHeaders": ["*"],
+    "ExposeHeaders": ["Content-Length", "Content-Range", "Content-Type"],
+    "MaxAgeSeconds": 86400
+  }
+]
+```
+
+Add any Vercel preview origins you use. Without this, mix export shows: “Enable CORS on the music bucket…”
 
 ## Reflections
 

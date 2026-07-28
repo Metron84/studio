@@ -514,6 +514,30 @@
     }
     .modal-set-btn:hover { color:var(--text); border-color:rgba(255,255,255,0.35); }
     .modal-set-btn.active { color:var(--accent); border-color:var(--accent); text-shadow:0 0 10px var(--accent); }
+    .now-playing-star {
+      appearance:none; cursor:pointer; background:transparent; flex-shrink:0;
+      border:1px solid rgba(255,255,255,0.18); color:var(--dim);
+      border-radius:6px; font-size:1.1rem; line-height:1; padding:6px 10px;
+      transition:color .15s, border-color .15s, text-shadow .15s;
+    }
+    .now-playing-star:hover { color:var(--text); border-color:rgba(255,255,255,0.35); }
+    .now-playing-star.active { color:var(--accent); border-color:var(--accent); text-shadow:0 0 10px var(--accent); }
+    .dj-set-options {
+      display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px;
+      padding:0 24px 12px; color:var(--dim); font-size:0.72rem; letter-spacing:1px;
+    }
+    .dj-set-options label {
+      display:inline-flex; align-items:center; gap:8px; cursor:pointer; user-select:none;
+      text-transform:uppercase;
+    }
+    .dj-set-options input[type="checkbox"] {
+      accent-color:var(--accent); width:16px; height:16px; cursor:pointer;
+    }
+    .dj-set-mix-status {
+      flex:1 1 100%; min-height:1.2em; color:var(--dim); font-size:0.7rem; letter-spacing:0.5px;
+      text-transform:none;
+    }
+    .dj-set-mix-status.is-error { color:rgba(255,150,130,0.95); }
     .modal-track.dragging {
       opacity:0.5;
     }
@@ -589,7 +613,7 @@
       font-style:italic;
       font-size:clamp(0.95rem,2.5vw,1.3rem);
       color:#fff;
-      max-width:55%;
+      max-width:100%;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -883,12 +907,20 @@
     </div>
     <div class="modal-header-actions">
       <button type="button" class="modal-restore-btn" onclick="playDjSet()" aria-label="Play your set">▶ Play set</button>
+      <button type="button" class="modal-restore-btn" id="djSetDownloadBtn" onclick="downloadDjSetMix()" aria-label="Download mix with crossfades" disabled>Download mix</button>
       <button type="button" class="modal-restore-btn" onclick="clearDjSet()" aria-label="Clear your set">Clear</button>
       <button class="modal-close" onclick="closeDjSet()" aria-label="Close">&times;</button>
     </div>
   </div>
   <div class="modal-search-wrap" style="padding:0 24px 12px;">
     <input type="text" id="djSetNameInput" class="search-input" placeholder="Name tonight's set…" autocomplete="off" aria-label="Name your set" style="min-width:0;width:100%;">
+  </div>
+  <div class="dj-set-options">
+    <label for="djCrossfadeToggle">
+      <input type="checkbox" id="djCrossfadeToggle" checked>
+      Crossfade
+    </label>
+    <div class="dj-set-mix-status" id="djSetMixStatus" aria-live="polite"></div>
   </div>
   <div class="modal-list" id="djSetList" role="listbox" aria-label="Your DJ set" tabindex="0"></div>
 </div>
@@ -904,10 +936,11 @@
 
 <div class="bottom">
   <div class="track-row">
-    <div>
+    <div style="min-width:0;flex:1;">
       <div class="track-name" id="trackName">Loading…</div>
       <div class="track-artist" id="trackArtist">MRMELO VIBES</div>
     </div>
+    <button type="button" class="now-playing-star" id="nowPlayingStar" onclick="toggleNowPlayingStar()" title="Add to your set" aria-label="Add to your set" aria-pressed="false">☆</button>
     <div style="text-align:right">
       <div style="font-size:0.55rem;letter-spacing:2px;color:var(--dim);text-transform:uppercase;" id="trackNum">—</div>
     </div>
@@ -1038,6 +1071,7 @@ function renderTrackMeta(i) {
   document.getElementById('subtitle').classList.remove('show');
   document.getElementById('subtitleQuote').textContent = '';
   document.getElementById('subtitleSig').textContent = t.figure ? '— ' + t.figure : '— Mr. Melo';
+  updateNowPlayingStar();
   setTimeout(() => {
     // only show if this track is still the current one (guards against fast skips)
     if (queue[trackIdx] && queue[trackIdx].file === t.file) {
@@ -1251,6 +1285,7 @@ function buildUpNextListContent() {
       setBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
       setBtn.textContent = on ? '★' : '☆';
       updateDjSetBadge();
+      updateNowPlayingStar();
       if (document.getElementById('djSetModal')?.classList.contains('show')) buildDjSetList();
     });
     row.addEventListener('dragstart', (e) => {
@@ -1309,6 +1344,7 @@ function closeCatalogSearch() {
 }
 
 function openUpNext() {
+  closeDjSet();
   closeCatalogSearch();
   closeCatalogueMobileModal();
   const cat = document.getElementById('catalogue').value;
@@ -1394,6 +1430,61 @@ function djSetTracks() {
 function updateDjSetBadge() {
   const b = document.getElementById('djSetBadge');
   if (b) b.textContent = String(djSet.length);
+  updateDjSetDownloadBtn();
+}
+
+function updateDjSetDownloadBtn() {
+  const btn = document.getElementById('djSetDownloadBtn');
+  if (!btn) return;
+  btn.disabled = djMixExporting || djSetTracks().length === 0;
+}
+
+function syncCrossfadeToggleUi() {
+  const el = document.getElementById('djCrossfadeToggle');
+  if (el) el.checked = !!djCrossfade;
+}
+
+function setDjCrossfade(on) {
+  djCrossfade = !!on;
+  try { localStorage.setItem('mrmelo_dj_crossfade', djCrossfade ? '1' : '0'); } catch (_) {}
+  syncCrossfadeToggleUi();
+}
+
+function updateNowPlayingStar() {
+  const btn = document.getElementById('nowPlayingStar');
+  if (!btn) return;
+  const t = queue[trackIdx];
+  if (!t) {
+    btn.classList.remove('active');
+    btn.textContent = '☆';
+    btn.setAttribute('aria-pressed', 'false');
+    btn.disabled = true;
+    return;
+  }
+  btn.disabled = false;
+  const on = inDjSet(t.file);
+  btn.classList.toggle('active', on);
+  btn.textContent = on ? '★' : '☆';
+  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  btn.title = on ? 'Remove from your set' : 'Add to your set';
+  btn.setAttribute('aria-label', on ? 'Remove from your set' : 'Add to your set');
+}
+
+function toggleNowPlayingStar() {
+  const t = queue[trackIdx];
+  if (!t) return;
+  toggleDjSet(t.file);
+  updateDjSetBadge();
+  updateNowPlayingStar();
+  if (document.getElementById('djSetModal')?.classList.contains('show')) buildDjSetList();
+  if (document.getElementById('upNextModal')?.classList.contains('show')) buildUpNextListContent();
+}
+
+function setDjMixStatus(msg, isError) {
+  const el = document.getElementById('djSetMixStatus');
+  if (!el) return;
+  el.textContent = msg || '';
+  el.classList.toggle('is-error', !!isError);
 }
 
 function openDjSet() {
@@ -1402,6 +1493,8 @@ function openDjSet() {
   closeCatalogueMobileModal();
   const nameInput = document.getElementById('djSetNameInput');
   if (nameInput) nameInput.value = djSetName;
+  syncCrossfadeToggleUi();
+  setDjMixStatus('');
   buildDjSetList();
   document.getElementById('djSetBackdrop').classList.add('show');
   document.getElementById('djSetModal').classList.add('show');
@@ -1423,8 +1516,9 @@ function buildDjSetList() {
   if (!tracks.length) {
     const empty = document.createElement('div');
     empty.style.cssText = 'padding:32px 24px;color:var(--dim);text-align:center;font-size:0.8rem;letter-spacing:1px;';
-    empty.textContent = 'No tracks yet. Star songs from Up Next to build your set.';
+    empty.textContent = 'No tracks yet. Star songs from Up Next or the now-playing row to build your set.';
     list.appendChild(empty);
+    updateDjSetDownloadBtn();
     return;
   }
   tracks.forEach((t, i) => {
@@ -1467,12 +1561,14 @@ function buildDjSetList() {
     });
     list.appendChild(row);
   });
+  updateDjSetDownloadBtn();
 }
 
 function removeFromDjSet(i) {
   djSet.splice(i, 1);
   saveDjSet();
   updateDjSetBadge();
+  updateNowPlayingStar();
   buildDjSetList();
   if (document.getElementById('upNextModal')?.classList.contains('show')) buildUpNextListContent();
 }
@@ -1490,6 +1586,7 @@ function clearDjSet() {
   djSet = [];
   saveDjSet();
   updateDjSetBadge();
+  updateNowPlayingStar();
   buildDjSetList();
   if (document.getElementById('upNextModal')?.classList.contains('show')) buildUpNextListContent();
 }
@@ -1511,6 +1608,163 @@ function playDjSetFrom(startIdx) {
 }
 function playDjSet() { playDjSetFrom(0); }
 
+function sanitizeDownloadName(name) {
+  const cleaned = String(name || 'mrmelo-set').replace(/[<>:"/\\|?*\u0000-\u001f]/g, '').trim();
+  return (cleaned || 'mrmelo-set').slice(0, 80);
+}
+
+function audioBufferToWavBlob(buffer) {
+  const numChannels = buffer.numberOfChannels;
+  const sampleRate = buffer.sampleRate;
+  const format = 1;
+  const bitDepth = 16;
+  const samples = buffer.length;
+  const blockAlign = numChannels * (bitDepth / 8);
+  const byteRate = sampleRate * blockAlign;
+  const dataSize = samples * blockAlign;
+  const arrayBuffer = new ArrayBuffer(44 + dataSize);
+  const view = new DataView(arrayBuffer);
+  const writeStr = (offset, str) => {
+    for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+  };
+  writeStr(0, 'RIFF');
+  view.setUint32(4, 36 + dataSize, true);
+  writeStr(8, 'WAVE');
+  writeStr(12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, format, true);
+  view.setUint16(22, numChannels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, byteRate, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, bitDepth, true);
+  writeStr(36, 'data');
+  view.setUint32(40, dataSize, true);
+  const channels = [];
+  for (let c = 0; c < numChannels; c++) channels.push(buffer.getChannelData(c));
+  let offset = 44;
+  for (let i = 0; i < samples; i++) {
+    for (let c = 0; c < numChannels; c++) {
+      let s = Math.max(-1, Math.min(1, channels[c][i]));
+      view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+      offset += 2;
+    }
+  }
+  return new Blob([arrayBuffer], { type: 'audio/wav' });
+}
+
+function estimateMixDurationSec(buffers, useCrossfade) {
+  if (!buffers.length) return 0;
+  let t = 0;
+  for (let i = 0; i < buffers.length; i++) {
+    const dur = buffers[i].duration;
+    const nextFade = (useCrossfade && i < buffers.length - 1)
+      ? Math.min(CROSSFADE_SEC, dur / 2, buffers[i + 1].duration / 2)
+      : 0;
+    t += dur - nextFade;
+  }
+  return t;
+}
+
+async function downloadDjSetMix() {
+  if (djMixExporting) return;
+  const tracks = djSetTracks();
+  if (!tracks.length) {
+    setDjMixStatus('Add tracks to your set first.', true);
+    return;
+  }
+  djMixExporting = true;
+  updateDjSetDownloadBtn();
+  setDjMixStatus('Fetching 1 / ' + tracks.length + '…');
+
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let probeCtx = null;
+  try {
+    probeCtx = new AudioCtx();
+    const buffers = [];
+    for (let i = 0; i < tracks.length; i++) {
+      setDjMixStatus('Fetching ' + (i + 1) + ' / ' + tracks.length + '…');
+      let res;
+      try {
+        res = await fetch(tracks[i].file, { mode: 'cors' });
+      } catch (_) {
+        throw new Error('Enable CORS on the music bucket so mixes can be downloaded.');
+      }
+      if (!res.ok) throw new Error('Could not fetch “' + (tracks[i].title || 'track') + '” (' + res.status + ').');
+      const ab = await res.arrayBuffer();
+      setDjMixStatus('Decoding ' + (i + 1) + ' / ' + tracks.length + '…');
+      // decodeAudioData may detach the buffer
+      const buf = await probeCtx.decodeAudioData(ab.slice(0));
+      buffers.push(buf);
+    }
+
+    const useXf = !!djCrossfade;
+    const totalSec = estimateMixDurationSec(buffers, useXf);
+    if (totalSec > 40 * 60) {
+      setDjMixStatus('Long mix (~' + Math.round(totalSec / 60) + ' min) — WAV may be large. Mixing…');
+    } else {
+      setDjMixStatus('Mixing ' + tracks.length + ' tracks…');
+    }
+
+    const sampleRate = buffers[0].sampleRate || 44100;
+    const numChannels = Math.max(1, ...buffers.map((b) => b.numberOfChannels));
+    const length = Math.max(1, Math.ceil(totalSec * sampleRate));
+    const offline = new OfflineAudioContext(numChannels, length, sampleRate);
+
+    let t = 0;
+    let prevFade = 0;
+    for (let i = 0; i < buffers.length; i++) {
+      const buf = buffers[i];
+      const dur = buf.duration;
+      const nextFade = (useXf && i < buffers.length - 1)
+        ? Math.min(CROSSFADE_SEC, dur / 2, buffers[i + 1].duration / 2)
+        : 0;
+      const src = offline.createBufferSource();
+      src.buffer = buf;
+      const g = offline.createGain();
+      src.connect(g);
+      g.connect(offline.destination);
+      if (prevFade > 0) {
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(1, t + prevFade);
+      } else {
+        g.gain.setValueAtTime(1, t);
+      }
+      if (nextFade > 0) {
+        const fadeStart = t + dur - nextFade;
+        g.gain.setValueAtTime(1, Math.max(t, fadeStart));
+        g.gain.linearRampToValueAtTime(0, t + dur);
+      }
+      src.start(t);
+      t = t + dur - nextFade;
+      prevFade = nextFade;
+    }
+
+    const rendered = await offline.startRendering();
+    setDjMixStatus('Encoding WAV…');
+    const blob = audioBufferToWavBlob(rendered);
+    const filename = sanitizeDownloadName(djSetName) + '.wav';
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    setDjMixStatus('Downloaded ' + filename + (useXf ? ' (with crossfades).' : ' (hard cuts).'));
+  } catch (err) {
+    const msg = (err && err.message) ? err.message : 'Mix export failed.';
+    setDjMixStatus(msg, true);
+  } finally {
+    if (probeCtx) {
+      try { await probeCtx.close(); } catch (_) {}
+    }
+    djMixExporting = false;
+    updateDjSetDownloadBtn();
+  }
+}
+
 function escapeHtml(s) {
   const div = document.createElement('div');
   div.textContent = s || '';
@@ -1524,8 +1778,14 @@ idleDeck.id = 'audio2';
 audio.parentNode.insertBefore(idleDeck, audio.nextSibling);
 
 let djCrossfade = true;    // natural fade between tracks
+try {
+  const storedXf = localStorage.getItem('mrmelo_dj_crossfade');
+  if (storedXf === '0' || storedXf === 'false') djCrossfade = false;
+  else if (storedXf === '1' || storedXf === 'true') djCrossfade = true;
+} catch (_) {}
 const CROSSFADE_SEC = 6;   // fade length in seconds
 let isFading = false;
+let djMixExporting = false;
 
 function cancelFade() {
   if (!isFading) return;
@@ -1700,7 +1960,10 @@ catalogueTiles.forEach((btn) => {
 });
 
 document.getElementById('djSetNameInput')?.addEventListener('input', (e) => saveDjSetName(e.target.value));
+document.getElementById('djCrossfadeToggle')?.addEventListener('change', (e) => setDjCrossfade(e.target.checked));
+syncCrossfadeToggleUi();
 updateDjSetBadge();
+updateNowPlayingStar();
 
 (function wireSearchInputs() {
   const desktop = document.getElementById('searchInput');
@@ -1884,6 +2147,13 @@ document.addEventListener('keydown', (e) => {
   if (searchModal && searchModal.classList.contains('show')) {
     if (e.code === 'Escape') {
       closeCatalogSearch();
+      return;
+    }
+  }
+  const djModal = document.getElementById('djSetModal');
+  if (djModal && djModal.classList.contains('show')) {
+    if (e.code === 'Escape') {
+      closeDjSet();
       return;
     }
   }
