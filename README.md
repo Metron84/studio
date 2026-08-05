@@ -1,41 +1,43 @@
-# MRMELO — Nostalgia Player
+# MRMELO VIBES — Nostalgia Player
 
-**mrmelo.com** — A nostalgia player for your music. Stream your favourite decades—80s, 90s, 2000s, folk, and MrMelo Mix. Each track comes with a reflection from a historical figure.
+**[mrmelo.com](https://mrmelo.com)** — A full-viewport nostalgia music player. Stream curated catalogues with dual-deck crossfades, DJ Set mix export, venue/kiosk mode, and a reflection on each track from a historical figure.
 
-## PWA & mobile
+White-label keys live in [`config.json`](config.json) — see **[CONFIG.md](CONFIG.md)**.
 
-- **PWA:** Installable as an app (Add to Home Screen). Uses `manifest.json` and `sw.js`.
-- **Mobile:** Responsive layout, touch-friendly controls (44px min), safe-area insets for notches.
-- **Sharing:** Add `og-image.png` (1200×630) for social previews. Use `og-image.html` as a template—open in browser, screenshot at 1200×630, save as `og-image.png`.
+## Catalogue (699 tracks)
 
-## Demo tracks
+| Catalogue | Tracks |
+|-----------|-------:|
+| 80s | 80 |
+| 90s | 102 |
+| 2000 | 114 |
+| MrMelo Mix | 223 |
+| Oldies and Goldies | 80 |
+| Summer Dance | 55 |
+| FootFans | 45 |
 
-Deployed builds include royalty-free demo tracks from [SoundHelix](https://www.soundhelix.com/) (CC licensed). To use your own music, run the build script—it overwrites `playlist.json` with local paths.
+There is no Folk catalogue. Choose **Entire catalogue** or one of the rows above in the header tiles.
+
+Audio streams from Cloudflare R2 (`pub-…r2.dev/music/…`). For production, prefer a **custom domain** on the bucket (for example `music.mrmelo.com`) and set `mediaBaseUrl` in `config.json` to that origin so the player and CORS policy stay on your domain instead of the `*.r2.dev` hostname.
 
 ## Setup
 
-1. **Music folders:** Place MP3s in `music/80s/`, `music/90s/`, `music/2000/`, `music/folk/`, `music/MrMelo Mix/`.
-2. **Build playlist:** After adding tracks, run:
+1. **Music:** Keep MP3s on R2 under `music/{catalogue}/…`, or rebuild from local folders with `build-playlist.cjs`.
+2. **Build playlist** (optional, when adding local files):
    ```bash
-   cd "/path/to/MRMELO VIBES"
-   MUSIC_PATH="/path/to/MRMELO VIBES/music" node build-playlist.cjs
+   MUSIC_PATH="/path/to/music" node build-playlist.cjs
    ```
-   This scans the folders and generates `playlist.json` with reflections.
-3. **Serve locally:** Browsers block `file://` for fetch/audio. Run a local server:
+3. **Serve locally** (browsers block `file://` for fetch/audio):
    ```bash
    npx serve .
    ```
-   Or: `python3 -m http.server 8080` (then open http://localhost:8080)
-
-## Catalogue
-
-Select **Entire catalogue** or a single catalogue (80s, 90s, 2000, MrMelo Mix, Oldies and Goldies, Summer Dance, FootFans) to filter tracks.
+   Or: `python3 -m http.server 8080` → http://localhost:8080
 
 ## DJ Set mix download (R2 CORS)
 
-**Download mix** in Your DJ Set fetches tracks in the browser and renders one WAV with the same ~6s crossfades. That needs CORS on the public R2 bucket (playback alone does not).
+**Download mix** fetches tracks in the browser, bakes the same ~6s crossfades, and encodes an MP3 (lamejs, vendored at `/vendor/lame.min.js`). That needs CORS on the public R2 bucket (or its custom domain). Playback alone does not.
 
-In Cloudflare → R2 → your music bucket → **Settings → CORS policy**, allow:
+In Cloudflare → R2 → your music bucket → **Settings → CORS policy**:
 
 ```json
 [
@@ -45,7 +47,8 @@ In Cloudflare → R2 → your music bucket → **Settings → CORS policy**, all
       "https://www.mrmelo.com",
       "http://localhost:3000",
       "http://localhost:8080",
-      "http://127.0.0.1:8080"
+      "http://127.0.0.1:8080",
+      "http://127.0.0.1:3456"
     ],
     "AllowedMethods": ["GET", "HEAD"],
     "AllowedHeaders": ["*"],
@@ -55,8 +58,18 @@ In Cloudflare → R2 → your music bucket → **Settings → CORS policy**, all
 ]
 ```
 
-Add any Vercel preview origins you use. Without this, mix export shows: “Enable CORS on the music bucket…”
+Add any Vercel preview origins you use. If you serve music from a custom domain, include the site origins above on that bucket’s CORS policy as well.
+
+## PWA for venue screens
+
+Install MRMELO as a PWA (Add to Home Screen / Install app) on the tablet or TV that runs the room, then open it in **standalone** and enter **Venue** mode. A installed PWA beats a normal browser tab for kiosk use: no address bar or browser chrome, orientation can follow the display (`orientation: any`), the shell/`config.json`/`playlist.json` cache via the service worker so a brief network blip does not blank the UI, and you are less likely to lose the session to an accidental tab close or “restore session” prompt during a long night.
+
+## PWA & mobile
+
+- **PWA:** `manifest.json` + `sw.js` (cache `mrmelo-v5`: shell, `config.json`, `playlist.json`, `/vendor/lame.min.js`).
+- **Mobile:** Responsive layout, touch-friendly controls, safe-area insets; control row reorders on small screens.
+- **Sharing:** `og-image.png` (1200×630); template in `og-image.html`.
 
 ## Reflections
 
-Each track has a reflection from a historical figure (public domain, pre-1950) — Oscar Wilde, Emily Dickinson, Mark Twain, Nietzsche, Montaigne, Voltaire, Shakespeare, Jane Austen, Emerson, Thoreau, Pascal, Walt Whitman. The build script assigns figures and reflections per track.
+Each track has a reflection from a historical figure (public domain, pre-1950). The build script assigns figures and reflections per track.

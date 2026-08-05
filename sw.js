@@ -1,10 +1,13 @@
-const CACHE = 'mrmelo-v4';
+const CACHE = 'mrmelo-v5';
 const ASSETS = [
   '/',
   '/index.html',
+  '/config.json',
   '/playlist.json',
   '/manifest.json',
-  '/icon.svg'
+  '/icon.svg',
+  '/icon-maskable.svg',
+  '/vendor/lame.min.js'
 ];
 
 self.addEventListener('install', (e) => {

@@ -1,10 +1,10 @@
 {
-  "name": "MRMELO — Nostalgia Player",
-  "short_name": "MRMELO",
-  "description": "Stream your favourite decades—80s, 90s, 2000s, folk, and MrMelo Mix. A nostalgia player that remembers what you loved.",
+  "name": "MRMELO VIBES",
+  "short_name": "MRMELO VIBES",
+  "description": "Stream curated 80s, 90s, 2000s, MrMelo Mix, Oldies and Goldies, Summer Dance, and FootFans. A nostalgia player that remembers what you loved.",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "background_color": "#070707",
   "theme_color": "#070707",
   "icons": [
@@ -12,7 +12,13 @@
       "src": "icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }

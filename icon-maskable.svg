@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Full-bleed background for maskable safe zone -->
+  <rect width="512" height="512" fill="#070707"/>
+  <!-- Mark stays inside the central ~80% safe area -->
+  <text x="256" y="292" font-family="Arial Black, sans-serif" font-size="168" font-weight="900" fill="#00ffe1" text-anchor="middle">M</text>
+</svg>

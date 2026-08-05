@@ -1,0 +1,14 @@
+{
+  "brandName": "MRMELO VIBES",
+  "brandTagline": "NOSTALGIA PLAYER",
+  "brandLogoUrl": null,
+  "accent": "#00ffe1",
+  "bg": "#070707",
+  "mediaBaseUrl": null,
+  "showQuotes": true,
+  "quoteSource": "default",
+  "defaultCatalogue": "Entire catalogue",
+  "venueModeOnLoad": false,
+  "ambientOnLoad": false,
+  "schedule": []
+}
