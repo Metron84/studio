@@ -10,5 +10,6 @@
   "defaultCatalogue": "Entire catalogue",
   "venueModeOnLoad": false,
   "ambientOnLoad": false,
+  "showVenueCta": true,
   "schedule": []
 }

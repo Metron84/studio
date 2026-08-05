@@ -15,6 +15,7 @@ Loaded before `playlist.json`. A missing or malformed file falls back to the def
 | `defaultCatalogue` | `"Entire catalogue"` | Catalogue selected on load |
 | `venueModeOnLoad` | `false` | Enter venue mode after load |
 | `ambientOnLoad` | `false` | Start venue ambient mode |
+| `showVenueCta` | `true` | Show the header “For venues” CTA (set `false` on white-label venue installs) |
 | `schedule` | `[]` | Optional `{ start: "HH:MM", catalogue: "…" }` windows (venue mode only; applies at next track) |
 
 Accent contrast against `bg` must stay ≥ 4.5:1 or the default accent is kept and a console warning is logged.

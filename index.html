@@ -3,26 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>MrMelo — Nostalgia Music Player | 80s 90s 2000s Curated Vibes</title>
-  <meta name="description" content="MrMelo is a free curated nostalgia music player. Stream handpicked 80s, 90s, 2000s, MrMelo Mix, Oldies and Goldies, Summer Dance, and FootFans — no algorithm, just pure vibes.">
-  <meta name="keywords" content="nostalgia music player, 80s music, 90s music, 2000s playlist, curated music, free music player, oldies, mrmelo mix, summer dance, mrmelo">
+  <title>MRMELO VIBES - the screen behind your bar</title>
+  <meta name="description" content="A full-screen audio-reactive display for bars, restaurants and music venues.">
+  <meta name="keywords" content="nostalgia music player, venue display, bar music screen, 80s music, 90s music, 2000s playlist, mrmelo">
   <meta name="author" content="MrMelo">
   <link rel="canonical" href="https://mrmelo.com/">
   <meta name="theme-color" content="#070707">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MRMELO">
-  <meta property="og:title" content="MrMelo — Nostalgia Music Player">
-  <meta property="og:description" content="Curated 80s, 90s, and 2000s music. No algorithm. Just the good stuff.">
+  <meta property="og:title" content="MRMELO VIBES - the screen behind your bar">
+  <meta property="og:description" content="A full-screen audio-reactive display for bars, restaurants and music venues.">
   <meta property="og:url" content="https://mrmelo.com/">
-  <meta property="og:image" content="https://mrmelo.com/og-image.png">
+  <meta property="og:image" content="https://mrmelo.com/og.png">
+  <!-- FLAG: /og.png is a placeholder copy of og-image.png — replace with final 1200×630 venue share art -->
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="MrMelo — Nostalgia Music Player">
-  <meta name="twitter:description" content="Curated 80s, 90s, and 2000s music. No algorithm. Just the good stuff.">
-  <meta name="twitter:image" content="https://mrmelo.com/og-image.png">
+  <meta name="twitter:title" content="MRMELO VIBES - the screen behind your bar">
+  <meta name="twitter:description" content="A full-screen audio-reactive display for bars, restaurants and music venues.">
+  <meta name="twitter:image" content="https://mrmelo.com/og.png">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"MrMelo","url":"https://mrmelo.com","description":"A curated nostalgia music player featuring handpicked 80s, 90s, 2000s, MrMelo Mix, Oldies and Goldies, Summer Dance, and FootFans tracks.","applicationCategory":"MusicApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"MrMelo"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"MRMELO VIBES","url":"https://mrmelo.com","description":"A full-screen audio-reactive display for bars, restaurants and music venues.","applicationCategory":"MusicApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"MrMelo"}}
   </script>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="icon.svg">
@@ -204,6 +205,108 @@
       gap:var(--gap-2);
       width:max-content;
     }
+    .catalogue-divider {
+      flex:0 0 auto;
+      width:1px;
+      height:16px;
+      background:var(--line);
+      align-self:center;
+      margin:0 2px;
+    }
+    @media (max-width:700px) {
+      .catalogue-divider { display:none; }
+    }
+    .catalogue-footfans-sub {
+      font-family:'Share Tech Mono',monospace;
+      font-size:11px;
+      letter-spacing:0.14em;
+      color:var(--text-dim);
+      text-transform:uppercase;
+      margin:0;
+      max-height:0;
+      opacity:0;
+      overflow:hidden;
+      transition:opacity 160ms ease, max-height 160ms ease;
+    }
+    .catalogue-footfans-sub.is-visible {
+      max-height:2em;
+      opacity:1;
+      margin-top:2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .catalogue-footfans-sub { transition:none; }
+    }
+    .venues-cta {
+      appearance:none;
+      background:none;
+      border:none;
+      box-shadow:none;
+      padding:0;
+      margin:0 0 0 auto;
+      align-self:flex-start;
+      flex-shrink:0;
+      font-family:'Share Tech Mono',monospace;
+      font-size:11px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--text-dim);
+      text-decoration:none;
+      cursor:pointer;
+      transition:color var(--ease);
+    }
+    .venues-cta:hover { color:var(--accent); }
+    .venues-cta:focus-visible {
+      outline:2px solid var(--accent);
+      outline-offset:3px;
+    }
+    .venues-cta[hidden] { display:none !important; }
+    .app-shell.venue-mode .venues-cta,
+    .app-shell.venue-mode .catalogue-footfans-sub {
+      display:none !important;
+    }
+    .venues-modal-body {
+      padding:0 var(--gap-3) var(--gap-3);
+      display:flex;
+      flex-direction:column;
+      gap:var(--gap-2);
+      color:var(--text);
+      font-size:0.9rem;
+      line-height:1.55;
+      max-width:36rem;
+    }
+    .venues-modal-body p { margin:0; }
+    .venues-modal-cta {
+      display:inline-flex;
+      align-self:flex-start;
+      margin-top:var(--gap-1);
+      padding:10px 16px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      color:var(--accent);
+      text-decoration:none;
+      font-family:'Share Tech Mono',monospace;
+      font-size:var(--font-label);
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      transition:background var(--ease), border-color var(--ease), color var(--ease);
+    }
+    .venues-modal-cta:hover {
+      border-color:var(--accent);
+      background:rgba(0,255,225,0.10);
+    }
+    .venues-modal-footer {
+      margin-top:var(--gap-2);
+      font-family:'Share Tech Mono',monospace;
+      font-size:11px;
+      letter-spacing:0.06em;
+      color:var(--text-dim);
+    }
+    .venues-modal-footer a {
+      color:inherit;
+      text-decoration:underline;
+      text-underline-offset:2px;
+    }
+    .venues-modal-footer a:hover { color:var(--accent); }
     .catalogue-tile {
       appearance:none;
       -webkit-appearance:none;
@@ -415,7 +518,8 @@
       visibility:visible;
     }
     #modalBackdrop,
-    #djSetBackdrop {
+    #djSetBackdrop,
+    #venuesBackdrop {
       background:rgba(7,7,7,0.72);
       backdrop-filter:blur(18px);
       -webkit-backdrop-filter:blur(18px);
@@ -745,6 +849,51 @@
       outline:2px solid var(--accent);
       outline-offset:3px;
     }
+    .modal-play-now-btn {
+      appearance:none;
+      background:rgba(0,255,225,0.10);
+      border:1px solid var(--line);
+      color:var(--accent);
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.5rem;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      padding:4px var(--gap-1);
+      cursor:pointer;
+      border-radius:var(--radius);
+      opacity:0;
+      pointer-events:none;
+      transition:background var(--ease), border-color var(--ease), opacity var(--ease), color var(--ease);
+    }
+    .modal-track:hover .modal-play-now-btn,
+    .modal-track:focus-within .modal-play-now-btn,
+    .modal-play-now-btn:focus-visible {
+      opacity:1;
+      pointer-events:auto;
+    }
+    .modal-play-now-btn:hover {
+      border-color:var(--accent);
+      background:rgba(0,255,225,0.18);
+    }
+    .modal-play-now-btn:focus-visible {
+      outline:2px solid var(--accent);
+      outline-offset:3px;
+    }
+    .modal-play-now-btn[hidden] { display:none !important; }
+    @media (max-width:900px) {
+      .modal-play-now-btn {
+        opacity:1;
+        pointer-events:auto;
+      }
+    }
+    .search-venue-hint {
+      padding:0 var(--gap-3) var(--gap-1);
+      color:var(--text-dim);
+      font-size:0.65rem;
+      letter-spacing:0.4px;
+      line-height:1.4;
+    }
+    .search-venue-hint[hidden] { display:none !important; }
     .now-playing-star {
       appearance:none; cursor:pointer; background:transparent; flex-shrink:0;
       border:1px solid var(--line); color:var(--text-dim);
@@ -1566,19 +1715,22 @@
         <div class="catalogue-scroll" id="catalogueTiles" role="group" aria-label="Choose catalogue">
           <div class="catalogue-tiles">
             <button type="button" class="catalogue-tile selected" data-value="" aria-pressed="true">Entire catalogue</button>
+            <button type="button" class="catalogue-tile" data-value="Oldies and Goldies" aria-pressed="false">Oldies and Goldies</button>
             <button type="button" class="catalogue-tile" data-value="80s" aria-pressed="false">80s</button>
             <button type="button" class="catalogue-tile" data-value="90s" aria-pressed="false">90s</button>
             <button type="button" class="catalogue-tile" data-value="2000" aria-pressed="false">2000</button>
+            <span class="catalogue-divider" aria-hidden="true"></span>
             <button type="button" class="catalogue-tile" data-value="MrMelo Mix" aria-pressed="false">MrMelo Mix</button>
-            <button type="button" class="catalogue-tile" data-value="Oldies and Goldies" aria-pressed="false">Oldies and Goldies</button>
             <button type="button" class="catalogue-tile" data-value="Summer Dance" aria-pressed="false">Summer Dance</button>
             <button type="button" class="catalogue-tile" data-value="FootFans" aria-pressed="false">FootFans</button>
           </div>
         </div>
+        <p class="catalogue-footfans-sub" id="catalogueFootFansSub" hidden>TERRACE ANTHEMS · CURATED BY THE REFLECTIVE FOOTBALL</p>
       </fieldset>
       <input type="hidden" id="catalogue" value="">
     </div>
   </div>
+  <button type="button" class="venues-cta" id="venuesCtaLink" onclick="openVenuesModal()">For venues</button>
 </header>
 
 <main class="app-stage">
@@ -1624,9 +1776,9 @@
   </div>
   <div class="ctrl-stack">
     <div class="ctrl-row ctrl-row--primary" role="group" aria-label="Playback controls">
-      <button type="button" class="btn btn-transport ctrl-order-prev" onclick="prevTrack()" aria-label="Previous track" title="Previous track"><span class="ctrl-text">Prev</span><span class="ctrl-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5v14"/><path d="M11 5v14l9-7-9-7z"/></svg></span></button>
+      <button type="button" class="btn btn-transport ctrl-order-prev" onclick="prevTrack()" aria-label="Previous track" title="Previous track"><span class="ctrl-text">Prev</span><span class="ctrl-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5v14"/><path d="M19 5v14L9 12 19 5z"/></svg></span></button>
       <button type="button" class="btn play-btn ctrl-order-play" id="playBtn" onclick="togglePlay()" aria-label="Play" title="Play"><span class="play-icon play-icon--play" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="play-icon play-icon--pause" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg></span></button>
-      <button type="button" class="btn btn-transport ctrl-order-next" onclick="nextTrack()" aria-label="Next track" title="Next track"><span class="ctrl-text">Next</span><span class="ctrl-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5v14"/><path d="M5 12l9-7v14L5 12z"/></svg></span></button>
+      <button type="button" class="btn btn-transport ctrl-order-next" onclick="nextTrack()" aria-label="Next track" title="Next track"><span class="ctrl-text">Next</span><span class="ctrl-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5v14"/><path d="M5 5v14l10-7L5 5z"/></svg></span></button>
     </div>
     <div class="ctrl-row ctrl-row--secondary" role="group" aria-label="Queue and tools">
       <div class="search-wrap search-wrap--ctrl search-wrap--desktop ctrl-order-search">
@@ -1673,6 +1825,7 @@
     <label for="searchInputMobile" style="display:block;font-size:var(--font-label);letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;opacity:0.9;margin-bottom:var(--gap-1);">Song or artist</label>
     <input type="text" id="searchInputMobile" class="search-input" placeholder="Song or artist…" autocomplete="off" aria-label="Search songs by title or artist" style="min-width:0;width:100%;">
   </div>
+  <div class="search-venue-hint" id="searchVenueHint" hidden>Venue mode: results queue as Play next only — they will not cut the current track.</div>
   <div class="modal-list search-results-list" id="searchResultsList" role="listbox" aria-label="Search results"></div>
 </div>
 
@@ -1724,6 +1877,22 @@
   </div>
   <div class="dj-set-prune-notice" id="djSetPruneNotice" aria-live="polite"></div>
   <div class="modal-list" id="djSetList" role="listbox" aria-label="Your DJ set" tabindex="0"></div>
+</div>
+
+<div class="modal-backdrop" id="venuesBackdrop" onclick="closeVenuesModal()"></div>
+<div class="modal" id="venuesModal" role="dialog" aria-modal="true" aria-labelledby="venuesModalTitle">
+  <div class="modal-header">
+    <div class="modal-title" id="venuesModalTitle">MRMELO FOR VENUES</div>
+    <button type="button" class="modal-close" onclick="closeVenuesModal()" aria-label="Close">&times;</button>
+  </div>
+  <div class="venues-modal-body">
+    <p>This is a live demo of a screen built for bars, restaurants and music venues.</p>
+    <p>Full screen, brand it as your own, lock it, leave it running all night.</p>
+    <p>It plays from your existing music library. Your current licensing does not change.</p>
+    <p>The catalogue here is our demonstration content.</p>
+    <a class="venues-modal-cta" id="venuesModalCta" href="mailto:melo@thereflectivefootball.com?subject=MRMELO%20for%20venues&amp;body=Venue:%20%0AArea:%20%0AScreens:%20%0A">Get in touch</a>
+    <p class="venues-modal-footer">Built by <a href="https://thereflectivefootball.com" target="_blank" rel="noopener">The Reflective Football</a></p>
+  </div>
 </div>
 
 <div class="toast-stack" id="toastStack" aria-live="polite" aria-relevant="additions"></div>
@@ -1909,6 +2078,7 @@ const CONFIG_DEFAULTS = {
   defaultCatalogue: 'Entire catalogue',
   venueModeOnLoad: false,
   ambientOnLoad: false,
+  showVenueCta: true,
   schedule: []
 };
 let CONFIG = Object.assign({}, CONFIG_DEFAULTS);
@@ -2030,7 +2200,88 @@ function applyBrandingFromConfig() {
     }
   }
   document.getElementById('appShell')?.classList.toggle('hide-quotes', CONFIG.showQuotes === false);
-  document.title = name + ' — Nostalgia Music Player';
+  // Keep share/marketing title from <head>; do not overwrite with brand lockup
+  applyVenueCtaVisibility();
+}
+
+function applyVenueCtaVisibility() {
+  const link = document.getElementById('venuesCtaLink');
+  if (!link) return;
+  const show = CONFIG.showVenueCta !== false;
+  link.hidden = !show;
+  if (!show) closeVenuesModal();
+}
+
+function syncFootFansSubtitle() {
+  const el = document.getElementById('catalogueFootFansSub');
+  if (!el) return;
+  const on = (document.getElementById('catalogue')?.value === 'FootFans') && !(typeof venueMode !== 'undefined' && venueMode);
+  el.hidden = !on;
+  // allow CSS fade: toggle class after paint when showing
+  if (!on) {
+    el.classList.remove('is-visible');
+    return;
+  }
+  requestAnimationFrame(() => el.classList.add('is-visible'));
+}
+
+let venuesModalLastFocus = null;
+let venuesFocusTrapHandler = null;
+
+function getVenuesFocusable() {
+  const modal = document.getElementById('venuesModal');
+  if (!modal) return [];
+  return Array.from(modal.querySelectorAll(
+    'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+  )).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
+}
+
+function trapVenuesFocus(e) {
+  if (e.code !== 'Tab') return;
+  const modal = document.getElementById('venuesModal');
+  if (!modal || !modal.classList.contains('show')) return;
+  const list = getVenuesFocusable();
+  if (!list.length) return;
+  const first = list[0];
+  const last = list[list.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
+function openVenuesModal() {
+  if (CONFIG.showVenueCta === false || venueMode) return;
+  closeUpNext();
+  closeDjSet();
+  closeCatalogSearch();
+  closeCatalogueMobileModal();
+  venuesModalLastFocus = document.activeElement;
+  document.getElementById('venuesBackdrop')?.classList.add('show');
+  document.getElementById('venuesModal')?.classList.add('show');
+  if (!venuesFocusTrapHandler) {
+    venuesFocusTrapHandler = trapVenuesFocus;
+    document.addEventListener('keydown', venuesFocusTrapHandler);
+  }
+  const focusEl = document.getElementById('venuesModalCta') ||
+    document.querySelector('#venuesModal .modal-close');
+  setTimeout(() => focusEl?.focus(), 50);
+}
+
+function closeVenuesModal() {
+  document.getElementById('venuesBackdrop')?.classList.remove('show');
+  document.getElementById('venuesModal')?.classList.remove('show');
+  if (venuesFocusTrapHandler) {
+    document.removeEventListener('keydown', venuesFocusTrapHandler);
+    venuesFocusTrapHandler = null;
+  }
+  if (venuesModalLastFocus && typeof venuesModalLastFocus.focus === 'function') {
+    try { venuesModalLastFocus.focus(); } catch (_) {}
+  }
+  venuesModalLastFocus = null;
 }
 
 function catalogueValueFromLabel(label) {
@@ -2433,6 +2684,32 @@ function playNext(queueIndex) {
   refreshUpNextList();
 }
 
+function queueTrackAsNext(track) {
+  if (!track || !track.file) return false;
+  if (!queue.length) {
+    queue.push(track);
+    trackIdx = 0;
+    showToast('Playing next: ' + (track.title || 'track'), 2200);
+    refreshUpNextList();
+    return true;
+  }
+  let i = queue.findIndex((t) => t.file === track.file);
+  if (i === trackIdx) {
+    showToast('Already playing: ' + (track.title || 'track'), 2000);
+    return false;
+  }
+  if (i === -1) {
+    queue.splice(trackIdx + 1, 0, track);
+  } else {
+    queue.splice(i, 1);
+    if (i < trackIdx) trackIdx--;
+    queue.splice(trackIdx + 1, 0, track);
+  }
+  showToast('Playing next: ' + (track.title || 'track'), 2200);
+  refreshUpNextList();
+  return true;
+}
+
 function addToEnd(queueIndex) {
   if (!queue[queueIndex]) return;
   const t = queue[queueIndex];
@@ -2530,9 +2807,14 @@ function buildUpNextListContent() {
         '</div>' +
       '</div>';
     row.addEventListener('click', (e) => {
-      if (e.target.closest('.modal-queue-btn') || e.target.closest('.modal-set-btn') || e.target.closest('.modal-track-drag-handle') || e.target.closest('.modal-queue-overflow-btn') || e.target.closest('.modal-track-more')) return;
-      loadTrack(i);
-      closeUpNext();
+      if (e.target.closest('.modal-queue-btn') || e.target.closest('.modal-set-btn') || e.target.closest('.modal-track-drag-handle') || e.target.closest('.modal-queue-overflow-btn') || e.target.closest('.modal-track-more') || e.target.closest('.modal-play-now-btn')) return;
+      // Primary click queues as Play next — does not jump the current track
+      if (i === trackIdx) {
+        showToast('Already playing: ' + (t.title || 'track'), 2000);
+        return;
+      }
+      playNext(i);
+      showToast('Playing next: ' + (t.title || 'track'), 2200);
     });
     const overflowBtn = row.querySelector('.modal-queue-overflow-btn');
     const actions = row.querySelector('.modal-track-actions');
@@ -2597,6 +2879,7 @@ function openCatalogSearch() {
   if (desktop && mobile) mobile.value = desktop.value;
   document.getElementById('searchModalBackdrop').classList.add('show');
   document.getElementById('searchModal').classList.add('show');
+  syncSearchVenueHint();
   buildSearchResults();
   if (mobile) setTimeout(() => mobile.focus(), 50);
 }
@@ -3189,6 +3472,20 @@ function matchingSearchTracks(q) {
 }
 
 function playSearchResult(file) {
+  playSearchNow(file);
+}
+
+function playSearchNext(file) {
+  const t = ALL_TRACKS.find((x) => x.file === file) || queue.find((x) => x.file === file);
+  if (!t) return;
+  queueTrackAsNext(t);
+}
+
+function playSearchNow(file) {
+  if (venueMode) {
+    playSearchNext(file);
+    return;
+  }
   let i = queue.findIndex((t) => t.file === file);
   if (i === -1) {
     const t = ALL_TRACKS.find((x) => x.file === file);
@@ -3204,6 +3501,32 @@ function playSearchResult(file) {
   closeCatalogSearch();
 }
 
+function syncSearchVenueHint() {
+  const hint = document.getElementById('searchVenueHint');
+  if (!hint) return;
+  hint.hidden = !venueMode;
+}
+
+let searchActiveIndex = -1;
+let searchActiveTracks = [];
+
+function updateSearchResultFocus(container) {
+  if (!container) return;
+  const rows = Array.from(container.querySelectorAll('.modal-track'));
+  rows.forEach((row, idx) => {
+    const on = idx === searchActiveIndex;
+    row.classList.toggle('focused', on);
+    row.setAttribute('aria-selected', on ? 'true' : 'false');
+    if (on) {
+      row.setAttribute('tabindex', '0');
+      row.focus({ preventScroll: true });
+      row.scrollIntoView({ block: 'nearest' });
+    } else {
+      row.setAttribute('tabindex', '-1');
+    }
+  });
+}
+
 function renderSearchResultRows(container, tracks) {
   if (!container) return;
   container.innerHTML = '';
@@ -3214,10 +3537,14 @@ function renderSearchResultRows(container, tracks) {
     container.appendChild(empty);
     return;
   }
-  tracks.forEach((t) => {
+  const allowPlayNow = !venueMode;
+  tracks.forEach((t, idx) => {
     const row = document.createElement('div');
     row.className = 'modal-track';
     row.setAttribute('role', 'option');
+    row.setAttribute('tabindex', idx === 0 ? '0' : '-1');
+    row.dataset.file = t.file;
+    row.dataset.searchIndex = String(idx);
     const durStr = (t.duration != null && !isNaN(t.duration)) ? fmt(t.duration) : '';
     row.innerHTML =
       '<div class="modal-track-info">' +
@@ -3229,13 +3556,31 @@ function renderSearchResultRows(container, tracks) {
         '</div>' +
       '</div>' +
       '<div class="modal-track-actions">' +
+        (allowPlayNow
+          ? '<button type="button" class="modal-play-now-btn" aria-label="Play now" title="Play now">Play now</button>'
+          : '') +
         '<button type="button" class="modal-set-btn" title="Add to your set" aria-pressed="false">☆</button>' +
       '</div>';
     const star = row.querySelector('.modal-set-btn');
     bindDjSetStarButton(star, t.file);
+    const playNowBtn = row.querySelector('.modal-play-now-btn');
+    if (playNowBtn) {
+      playNowBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        playSearchNow(t.file);
+      });
+    }
     row.addEventListener('click', (e) => {
-      if (e.target.closest('.modal-set-btn')) return;
-      playSearchResult(t.file);
+      if (e.target.closest('.modal-set-btn') || e.target.closest('.modal-play-now-btn')) return;
+      playSearchNext(t.file);
+    });
+    row.addEventListener('keydown', (e) => {
+      if (e.code === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.shiftKey && allowPlayNow) playSearchNow(t.file);
+        else playSearchNext(t.file);
+      }
     });
     container.appendChild(row);
   });
@@ -3244,8 +3589,11 @@ function renderSearchResultRows(container, tracks) {
 function buildSearchResults() {
   const q = catalogSearchQuery();
   const tracks = matchingSearchTracks(q);
+  searchActiveTracks = tracks;
+  searchActiveIndex = tracks.length ? 0 : -1;
   const modalList = document.getElementById('searchResultsList');
   const desktop = document.getElementById('searchResultsDesktop');
+  syncSearchVenueHint();
   renderSearchResultRows(modalList, tracks);
   if (desktop) {
     renderSearchResultRows(desktop, tracks);
@@ -4199,6 +4547,7 @@ function enterVenueMode() {
   closeDjSet();
   closeCatalogSearch();
   closeCatalogueMobileModal();
+  closeVenuesModal();
   const shell = document.getElementById('appShell');
   if (shell) shell.classList.add('venue-mode');
   document.getElementById('venueBtn')?.classList.add('glow');
@@ -4209,6 +4558,9 @@ function enterVenueMode() {
   markVenuePlayback(isPlaying);
   showVenueChrome();
   requestScheduleCatalogueSwitch();
+  syncSearchVenueHint();
+  syncFootFansSubtitle();
+  buildSearchResults();
   if (venueLocked) {
     // keep chrome briefly so lock glyph is findable, then hide others
     setTimeout(() => {
@@ -4235,6 +4587,9 @@ function exitVenueMode() {
   syncVenueAmbientUi();
   syncVenueLockUi();
   exitVenueFullscreen();
+  syncSearchVenueHint();
+  syncFootFansSubtitle();
+  buildSearchResults();
 }
 
 function venueActivity(e) {
@@ -4388,6 +4743,7 @@ function selectCatalogue(value) {
   });
   applyCatalogue();
   refreshCatalogueMobilePickerSelection();
+  syncFootFansSubtitle();
 }
 
 catalogueTiles.forEach((btn) => {
@@ -4419,14 +4775,43 @@ updateNowPlayingStar();
     });
     el.addEventListener('focus', () => buildSearchResults());
     el.addEventListener('keydown', (e) => {
-      if (e.code !== 'Escape') return;
-      el.value = '';
-      syncPair(el);
-      applyCatalogue();
-      buildSearchResults();
-      if (el === mobile && document.getElementById('searchModal').classList.contains('show')) {
+      if (e.code === 'Escape') {
+        el.value = '';
+        syncPair(el);
+        applyCatalogue();
+        buildSearchResults();
+        if (el === mobile && document.getElementById('searchModal').classList.contains('show')) {
+          e.preventDefault();
+          closeCatalogSearch();
+        }
+        return;
+      }
+      const popOpen = desktopPop && desktopPop.classList.contains('show');
+      const modalOpen = document.getElementById('searchModal')?.classList.contains('show');
+      const listEl = modalOpen
+        ? document.getElementById('searchResultsList')
+        : (popOpen ? desktopPop : null);
+      if (!listEl || !searchActiveTracks.length) return;
+      if (e.code === 'ArrowDown') {
         e.preventDefault();
-        closeCatalogSearch();
+        searchActiveIndex = Math.min(searchActiveTracks.length - 1, Math.max(0, searchActiveIndex) + 1);
+        if (searchActiveIndex < 0) searchActiveIndex = 0;
+        updateSearchResultFocus(listEl);
+        return;
+      }
+      if (e.code === 'ArrowUp') {
+        e.preventDefault();
+        searchActiveIndex = Math.max(0, searchActiveIndex - 1);
+        updateSearchResultFocus(listEl);
+        return;
+      }
+      if (e.code === 'Enter') {
+        e.preventDefault();
+        if (searchActiveIndex < 0) searchActiveIndex = 0;
+        const t = searchActiveTracks[searchActiveIndex];
+        if (!t) return;
+        if (e.shiftKey && !venueMode) playSearchNow(t.file);
+        else playSearchNext(t.file);
       }
     });
   });
@@ -4817,6 +5202,13 @@ document.addEventListener('keydown', (e) => {
       return;
     }
   }
+  const venuesModal = document.getElementById('venuesModal');
+  if (venuesModal && venuesModal.classList.contains('show')) {
+    if (e.code === 'Escape') {
+      closeVenuesModal();
+      return;
+    }
+  }
   const modal = document.getElementById('upNextModal');
   if (modal && modal.classList.contains('show')) {
     if (e.code === 'Escape') {
@@ -4844,8 +5236,17 @@ document.addEventListener('keydown', (e) => {
         return;
       }
       if (e.code === 'Enter') {
-        loadTrack(upNextActiveIndex);
-        closeUpNext();
+        const t = queue[upNextActiveIndex];
+        if (!t) { e.preventDefault(); return; }
+        if (e.shiftKey && !venueMode) {
+          loadTrack(upNextActiveIndex);
+          closeUpNext();
+        } else if (upNextActiveIndex === trackIdx) {
+          showToast('Already playing: ' + (t.title || 'track'), 2000);
+        } else {
+          playNext(upNextActiveIndex);
+          showToast('Playing next: ' + (t.title || 'track'), 2200);
+        }
         e.preventDefault();
         return;
       }
